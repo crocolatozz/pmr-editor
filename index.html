@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PMR Editor</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+  <title>📝 PMR Editor</title>
   <style>
     :root {
       --bg-primary: #0f172a;
       --bg-card: #1e293b;
       --bg-header: #1e293b;
       --bg-input: #334155;
-      --accent: #38bdf8;
-      --accent-hover: #0284c7;
+      --accent: #10b981;
+      --accent-hover: #059669;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --border-color: #334155;
@@ -101,7 +102,7 @@
 
     select:focus, input[type="text"]:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
     }
 
     .action-buttons {
@@ -150,7 +151,7 @@
     }
 
     .btn-outline:hover {
-      background-color: rgba(56, 189, 248, 0.1);
+      background-color: rgba(16, 185, 129, 0.1);
     }
 
     .file-input-wrapper {
@@ -216,7 +217,7 @@
 
     .excel-table th.unit-header {
       background-color: #334155;
-      color: #7dd3fc;
+      color: #6ee7b7;
       font-weight: 500;
       font-size: 0.75rem;
     }
@@ -249,8 +250,8 @@
     .excel-input:focus {
       border-color: var(--accent);
       background-color: #1e293b;
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
-      color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+      color: #10b981;
     }
 
     .excel-input.highlight {
@@ -279,7 +280,7 @@
       border: 3px solid #0f172a;
     }
     .excel-container::-webkit-scrollbar-thumb:hover {
-      background: #38bdf8;
+      background: #10b981;
     }
   </style>
 </head>
@@ -288,7 +289,7 @@
   <div class="app-container">
     <header>
       <div>
-        <h1>PMR Editor <span id="totalCellBadge" style="display:none;"></span></h1>
+        <h1>📝 PMR Editor <span id="totalCellBadge" style="display:none;"></span></h1>
         <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Web App file PMR Editor untuk DILOC Pabrik Urea 1B</p>
       </div>
       <div id="statusInfo" style="font-size: 0.9rem; color: var(--accent); font-weight: 600;">Memuat parameter...</div>
@@ -298,16 +299,16 @@
       <div class="control-group">
         <label for="selectOperator">Pilih Operator</label>
         <select id="selectOperator" onchange="loadParameter(this.value)">
-          <option value="operator1" selected>Operator 1 (167 Parameter)</option>
-          <option value="operator2">Operator 2 (51 Parameter)</option>
-          <option value="operator3">Operator 3 (45 Parameter)</option>
+          <option value="operator1" selected>Operator 1</option>
+          <option value="operator2">Operator 2</option>
+          <option value="operator3">Operator 3</option>
         </select>
       </div>
 
       <div class="control-group">
         <label for="macroSpeed">Kecepatan Pengisian</label>
         <select id="macroSpeed">
-          <option value="0.005" selected>⚡ Super Cepat (0.005s - Ultra)</option>
+          <option value="0.005" selected>⚡ Super Cepat (0.005s)</option>
           <option value="0.01">🚀 Cepat (0.01s)</option>
           <option value="0.03">🐢 Normal Safe (0.03s)</option>
         </select>

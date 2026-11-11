@@ -2409,7 +2409,7 @@ async function loadParameter(operatorKey) {
     currentParameters = EMBEDDED_DATA[operatorKey] || [];
   }
 
-  const labelOp = operatorKey === 'operator1' ? 'Operator 1 (167 Tag)' : (operatorKey === 'operator2' ? 'Operator 2 (51 Tag)' : 'Operator 3 (45 Tag)');
+  const labelOp = operatorKey === 'operator1' ? 'Operator 1 (167 Parameter)' : (operatorKey === 'operator2' ? 'Operator 2 (51 Parameter)' : 'Operator 3 (45 Parameter)');
   if (statusInfo) statusInfo.textContent = `Aktif: ${labelOp}`;
   if (badge) badge.textContent = `${currentParameters.length} Cell Fix`;
 
