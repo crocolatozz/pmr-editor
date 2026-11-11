@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMR Editor - Web App Logsheet Operator</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-card: #1e293b;
+      --bg-header: #1e293b;
+      --bg-input: #334155;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --excel-header: #0f172a;
+      --excel-border: #475569;
+      --excel-bg: #1e293b;
+      --excel-hover: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      padding: 15px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-container {
+      max-width: 100%;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      font-size: 0.8rem;
+      background-color: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      background: var(--bg-card);
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      align-items: center;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    select, input[type="text"] {
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    select:focus, input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-self: flex-end;
+    }
+
+    .btn {
+      padding: 9px 16px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #0f172a;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: #475569;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #334155;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(56, 189, 248, 0.1);
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .file-input-wrapper input[type=file] {
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    /* EXCEL-LIKE HORIZONTAL TABLE LAYOUT */
+    .excel-container {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .excel-table {
+      border-collapse: collapse;
+      width: max-content;
+      font-size: 0.85rem;
+    }
+
+    .excel-table th, .excel-table td {
+      border: 1px solid var(--excel-border);
+      padding: 8px 10px;
+      text-align: center;
+      white-space: nowrap;
+      min-width: 140px;
+      max-width: 220px;
+    }
+
+    .excel-table th.eq-header {
+      background-color: #0f172a;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.88rem;
+      border-bottom: 2px solid var(--accent);
+      padding: 10px 12px;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .excel-table th.tag-header {
+      background-color: #1e293b;
+      color: #e2e8f0;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .excel-table th.unit-header {
+      background-color: #334155;
+      color: #7dd3fc;
+      font-weight: 500;
+      font-size: 0.75rem;
+    }
+
+    .excel-table tr.input-row td {
+      background-color: #0f172a;
+      padding: 6px 8px;
+    }
+
+    .excel-table tr.input-row td:hover {
+      background-color: var(--excel-hover);
+    }
+
+    .excel-input {
+      width: 100%;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: #ffffff;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      text-align: center;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.15s;
+    }
+
+    .excel-input:focus {
+      border-color: var(--accent);
+      background-color: #1e293b;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+    }
+
+    .excel-input.highlight {
+      border-color: #f59e0b;
+      background-color: rgba(245, 158, 11, 0.15);
+    }
+
+    .col-index {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      padding: 15px 0;
+      border-top: 1px solid var(--border-color);
+    }
+
+    /* Scrollbar styling */
+    .excel-container::-webkit-scrollbar {
+      height: 12px;
+    }
+    .excel-container::-webkit-scrollbar-track {
+      background: #0f172a;
+      border-radius: 0 0 12px 12px;
+    }
+    .excel-container::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 6px;
+      border: 3px solid #0f172a;
+    }
+    .excel-container::-webkit-scrollbar-thumb:hover {
+      background: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <header>
+      <div>
+        <h1>📊 PMR Editor <span class="badge" id="totalCellBadge">0 Cell</span></h1>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Web App Logsheet Pabrik Urea &bull; Format Horizontal Spreadsheet Excel</p>
+      </div>
+      <div id="statusInfo" style="font-size: 0.9rem; color: var(--accent); font-weight: 600;">Memuat parameter...</div>
+    </header>
+
+    <div class="controls-bar">
+      <div class="control-group">
+        <label for="selectOperator">Pilih Operator</label>
+        <select id="selectOperator" onchange="loadParameter(this.value)">
+          <option value="operator1" selected>Operator 1 (167 Parameter)</option>
+          <option value="operator2">Operator 2 (51 Parameter)</option>
+          <option value="operator3">Operator 3 (45 Parameter)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="macroSpeed">Kecepatan Export PMR</label>
+        <select id="macroSpeed">
+          <option value="0.005" selected>⚡ Super Cepat (0.005s - Ultra)</option>
+          <option value="0.01">🚀 Cepat (0.01s)</option>
+          <option value="0.03">🐢 Normal Safe (0.03s)</option>
+        </select>
+      </div>
+
+      <div class="control-group" style="flex: 2;">
+        <label for="searchInput">Cari & Jump Tag / Equipment</label>
+        <input type="text" id="searchInput" placeholder="Ketik tag, equipment (cth: LG-801, U-EA122...)" oninput="filterParameters()">
+      </div>
+
+      <div class="action-buttons">
+        <div class="file-input-wrapper">
+          <button class="btn btn-secondary">📂 Import PMR / JSON</button>
+          <input type="file" id="importFileInput" accept=".pmr,.json" onchange="importData(event)">
+        </div>
+
+        <button class="btn btn-primary" onclick="exportData()">💾 Simpan Logsheet</button>
+        <button class="btn btn-outline" onclick="exportMacroPmr()">⚡ Export PMR Macro</button>
+      </div>
+    </div>
+
+    <form id="pmrForm" onsubmit="event.preventDefault();">
+      <!-- Horizontal Scrollable Excel Grid -->
+      <div class="excel-container" id="excelScrollContainer">
+        <table class="excel-table" id="excelTable">
+          <thead>
+            <tr id="headerEquipmentRow"></tr>
+            <tr id="headerTagRow"></tr>
+            <tr id="headerUnitRow"></tr>
+          </thead>
+          <tbody>
+            <tr class="input-row" id="inputCellsRow"></tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+
+    <footer>
+      PMR Editor App &bull; Horizontal Excel Layout &bull; Shift Logsheet Urea Offline & Cross-Device Compatible
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
