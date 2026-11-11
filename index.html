@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PMR Editor - Web App Logsheet Operator</title>
+  <title>PMR Editor</title>
   <style>
     :root {
       --bg-primary: #0f172a;
@@ -60,15 +60,6 @@
       display: flex;
       align-items: center;
       gap: 10px;
-    }
-
-    .badge {
-      font-size: 0.8rem;
-      background-color: rgba(56, 189, 248, 0.15);
-      color: var(--accent);
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
     }
 
     .controls-bar {
@@ -235,10 +226,6 @@
       padding: 6px 8px;
     }
 
-    .excel-table tr.input-row td:hover {
-      background-color: var(--excel-hover);
-    }
-
     .excel-input {
       width: 100%;
       background-color: var(--bg-input);
@@ -272,15 +259,6 @@
       margin-bottom: 2px;
     }
 
-    footer {
-      margin-top: auto;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.82rem;
-      padding: 15px 0;
-      border-top: 1px solid var(--border-color);
-    }
-
     /* Scrollbar styling */
     .excel-container::-webkit-scrollbar {
       height: 12px;
@@ -304,8 +282,8 @@
   <div class="app-container">
     <header>
       <div>
-        <h1>📊 PMR Editor <span class="badge" id="totalCellBadge">0 Cell</span></h1>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Web App Logsheet Pabrik Urea &bull; Format Horizontal Spreadsheet Excel</p>
+        <h1>PMR Editor</h1>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Web App file PMR Editor untuk DILOC Pabrik Urea 1B</p>
       </div>
       <div id="statusInfo" style="font-size: 0.9rem; color: var(--accent); font-weight: 600;">Memuat parameter...</div>
     </header>
@@ -321,7 +299,7 @@
       </div>
 
       <div class="control-group">
-        <label for="macroSpeed">Kecepatan Export PMR</label>
+        <label for="macroSpeed">Kecepatan Pengisian</label>
         <select id="macroSpeed">
           <option value="0.005" selected>⚡ Super Cepat (0.005s - Ultra)</option>
           <option value="0.01">🚀 Cepat (0.01s)</option>
@@ -360,10 +338,6 @@
         </table>
       </div>
     </form>
-
-    <footer>
-      PMR Editor App &bull; Horizontal Excel Layout &bull; Shift Logsheet Urea Offline & Cross-Device Compatible
-    </footer>
   </div>
 
   <script src="app.js"></script>
