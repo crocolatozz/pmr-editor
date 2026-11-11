@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
-  <title>📝 PMR Editor</title>
+  <title>PMR Editor</title>
   <style>
     :root {
       --bg-primary: #0f172a;
@@ -325,8 +325,13 @@
           <input type="file" id="importFileInput" accept=".pmr,.json" onchange="importData(event)">
         </div>
 
-        <button class="btn btn-primary" onclick="exportData()">💾 Simpan Logsheet</button>
-        <button class="btn btn-outline" onclick="exportMacroPmr()">⚡ Export PMR Macro</button>
+        <div class="export-wrapper" style="display: inline-flex; align-items: center; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;">
+          <select id="exportFormat" style="background: transparent; border: none; color: var(--text-main); padding: 9px 10px; font-size: 0.88rem; outline: none; cursor: pointer;">
+            <option value="pmr" selected>⚡ Macro PMR (.pmr)</option>
+            <option value="json">💾 Backup JSON (.json)</option>
+          </select>
+          <button class="btn btn-primary" style="border-radius: 0 7px 7px 0; margin-left: -1px;" onclick="handleExport()">💾 Export File</button>
+        </div>
       </div>
     </div>
 

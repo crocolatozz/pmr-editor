@@ -2677,6 +2677,16 @@ function parsePmrMacroEventsAccurate(events) {
   return values;
 }
 
+function handleExport() {
+  const formatSelect = document.getElementById('exportFormat');
+  const format = formatSelect ? formatSelect.value : 'pmr';
+  if (format === 'pmr') {
+    exportMacroPmr();
+  } else {
+    exportData();
+  }
+}
+
 function exportData() {
   const form = document.getElementById('pmrForm');
   const formData = new FormData(form);
