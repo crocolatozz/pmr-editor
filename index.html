@@ -226,6 +226,7 @@
       padding: 6px 8px;
     }
 
+    /* Input cell tetap konstan tanpa efek hover menyala */
     .excel-input {
       width: 100%;
       background-color: var(--bg-input);
@@ -238,6 +239,11 @@
       font-weight: 600;
       outline: none;
       transition: all 0.15s;
+    }
+
+    .excel-input:hover {
+      background-color: var(--bg-input);
+      border-color: var(--border-color);
     }
 
     .excel-input:focus {
@@ -282,7 +288,7 @@
   <div class="app-container">
     <header>
       <div>
-        <h1>PMR Editor</h1>
+        <h1>PMR Editor <span id="totalCellBadge" style="display:none;"></span></h1>
         <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Web App file PMR Editor untuk DILOC Pabrik Urea 1B</p>
       </div>
       <div id="statusInfo" style="font-size: 0.9rem; color: var(--accent); font-weight: 600;">Memuat parameter...</div>
