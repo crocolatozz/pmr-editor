@@ -2384,9 +2384,23 @@ document.addEventListener('DOMContentLoaded', () => {
   loadParameter(defaultOp);
 });
 
+function setImportedFileBadge(fileName) {
+  const el = document.getElementById('importedFileInfo');
+  if (!el) return;
+  if (fileName) {
+    el.innerHTML = '📄 File terpilih: <strong style="color: #e2e8f0;"></strong>';
+    el.querySelector('strong').textContent = fileName;
+    el.style.display = 'block';
+  } else {
+    el.textContent = '';
+    el.style.display = 'none';
+  }
+}
+
 async function loadParameter(operatorKey) {
   const statusInfo = document.getElementById('statusInfo');
   const badge = document.getElementById('totalCellBadge');
+  setImportedFileBadge(null);
 
   if (!operatorKey) {
     if (statusInfo) statusInfo.textContent = 'Belum ada operator dipilih';
@@ -2557,6 +2571,7 @@ function importData(event) {
             if (input.value !== "") populatedCount++;
           }
         });
+        setImportedFileBadge(file.name);
         alert(`✅ Sukses memuat ${populatedCount} data dari file JSON Logsheet!`);
         return;
       }
@@ -2581,12 +2596,12 @@ function importData(event) {
             : (detectedOp === 'operator2' ? 'Operator 2 (51 Parameter)' : 'Operator 3 (45 Parameter)');
           if (confirm(`⚠️ File PMR ini berisi ${total} cell (cocok dengan ${labelOp}). Pindah ke ${labelOp} otomatis?`)) {
             document.getElementById('selectOperator').value = detectedOp;
-            loadParameter(detectedOp).then(() => fillExtractedValues(extractedValues));
+            loadParameter(detectedOp).then(() => fillExtractedValues(extractedValues, file.name));
             return;
           }
         }
 
-        fillExtractedValues(extractedValues);
+        fillExtractedValues(extractedValues, file.name);
         return;
       }
 
@@ -2602,6 +2617,7 @@ function importData(event) {
             }
           }
         });
+        setImportedFileBadge(file.name);
         alert(`✅ Sukses memuat ${populatedCount} data dari Array JSON!`);
         return;
       }
@@ -2616,7 +2632,7 @@ function importData(event) {
   reader.readAsText(file);
 }
 
-function fillExtractedValues(extractedValues) {
+function fillExtractedValues(extractedValues, fileName) {
   document.querySelectorAll('.excel-input').forEach(inp => inp.value = "");
   let populatedCount = 0;
 
@@ -2631,6 +2647,7 @@ function fillExtractedValues(extractedValues) {
     }
   });
 
+  if (fileName) setImportedFileBadge(fileName);
   alert(`✅ Sukses membaca file PMR Macro! Terbaca ${extractedValues.length} cell (${populatedCount} cell terisi).`);
 }
 
@@ -2690,7 +2707,7 @@ function parsePmrMacroEventsAccurate(events) {
         let ch = null;
         if (keyMap[key] !== undefined) {
           ch = keyMap[key];
-        } else if (key.startsWith('Key.') || (key.startsWith('<') && key.endswith('>'))) {
+        } else if (key.startsWith('Key.') || (key.startsWith('<') && key.endsWith('>'))) {
           return;
         } else {
           let cleanKey = key.replace(/'/g, "");
