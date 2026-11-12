@@ -2397,6 +2397,11 @@ function setImportedFileBadge(fileName) {
   }
 }
 
+function normalizeDecimal(val) {
+  if (val === null || val === undefined) return "";
+  return val.toString().replace(/,/g, '.');
+}
+
 async function loadParameter(operatorKey) {
   const statusInfo = document.getElementById('statusInfo');
   const badge = document.getElementById('totalCellBadge');
@@ -2485,6 +2490,16 @@ function renderHorizontalExcel(params) {
     input.setAttribute('data-index', idx);
     input.placeholder = '...';
 
+    input.addEventListener('input', () => {
+      if (input.value.includes(',')) {
+        const pos = input.selectionStart;
+        input.value = normalizeDecimal(input.value);
+        if (pos !== null) {
+          input.setSelectionRange(pos, pos);
+        }
+      }
+    });
+
     input.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight' || e.key === 'Enter') {
         e.preventDefault();
@@ -2567,7 +2582,7 @@ function importData(event) {
           const input = document.getElementById(`input_${paramId}`);
           if (input) {
             let val = json.data[paramId].value !== undefined ? json.data[paramId].value : json.data[paramId];
-            input.value = val !== null && val !== undefined ? val : "";
+            input.value = normalizeDecimal(val);
             if (input.value !== "") populatedCount++;
           }
         });
@@ -2612,7 +2627,8 @@ function importData(event) {
             const paramObj = currentParameters[idx];
             const input = document.getElementById(`input_${paramObj.id}`);
             if (input) {
-              input.value = typeof val === 'object' ? (val.value || val.val || '') : val;
+              const rawVal = (typeof val === 'object' && val !== null) ? (val.value ?? val.val ?? '') : val;
+              input.value = normalizeDecimal(rawVal);
               if (input.value !== "") populatedCount++;
             }
           }
@@ -2641,8 +2657,9 @@ function fillExtractedValues(extractedValues, fileName) {
       const paramObj = currentParameters[idx];
       const input = document.getElementById(`input_${paramObj.id}`);
       if (input) {
-        input.value = val;
-        if (val !== "") populatedCount++;
+        const cleanVal = normalizeDecimal(val);
+        input.value = cleanVal;
+        if (cleanVal !== "") populatedCount++;
       }
     }
   });
@@ -2664,10 +2681,10 @@ function parsePmrMacroEventsAccurate(events) {
     '<96>': '0', '<97>': '1', '<98>': '2', '<99>': '3', '<100>': '4',
     '<101>': '5', '<102>': '6', '<103>': '7', '<104>': '8', '<105>': '9',
     '<106>': '*', '<107>': '+', '<109>': '-', '<110>': '.', '<111>': '/',
-    '<187>': '+', '<188>': ',', '<189>': '-', '<190>': '.', '<191>': '/',
+    '<187>': '+', '<188>': '.', '<189>': '-', '<190>': '.', '<191>': '/',
     // Nama key standar
     'Key.period': '.', 'Key.decimal': '.', 'Key.numpad_decimal': '.', 'Key.kp_decimal': '.',
-    'Key.comma': ',',
+    'Key.comma': '.',
     'Key.minus': '-', 'Key.hyphen': '-', 'Key.numpad_subtract': '-', 'Key.kp_subtract': '-',
     'Key.plus': '+', 'Key.numpad_add': '+',
     'Key.slash': '/', 'Key.divide': '/', 'Key.numpad_divide': '/',
@@ -2733,7 +2750,7 @@ function parsePmrMacroEventsAccurate(events) {
     cells.pop();
   }
 
-  return cells;
+  return cells.map(normalizeDecimal);
 }
 
 function handleExport() {
@@ -2757,13 +2774,13 @@ function exportData() {
   };
 
   currentParameters.forEach(p => {
-    const val = formData.get(p.id);
+    const val = normalizeDecimal(formData.get(p.id));
     result.data[p.id] = {
       index: p.index,
       equipment: p.equipment,
       tag: p.tag,
       unit: p.unit,
-      value: val !== null ? val : ""
+      value: val
     };
   });
 
@@ -2783,7 +2800,7 @@ function exportMacroPmr() {
   const events = [];
 
   currentParameters.forEach((p, idx) => {
-    const val = (formData.get(p.id) || "").toString();
+    const val = normalizeDecimal(formData.get(p.id));
 
     for (let char of val) {
       events.push({ type: "keyboardEvent", key: char, pressed: true, timestamp: charDelay });
