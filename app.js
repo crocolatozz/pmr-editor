@@ -2548,6 +2548,7 @@ function importData(event) {
       let populatedCount = 0;
 
       if (json.data) {
+        document.querySelectorAll('.excel-input').forEach(inp => inp.value = "");
         Object.keys(json.data).forEach(paramId => {
           const input = document.getElementById(`input_${paramId}`);
           if (input) {
@@ -2562,14 +2563,25 @@ function importData(event) {
 
       if (json.events && Array.isArray(json.events)) {
         const extractedValues = parsePmrMacroEventsAccurate(json.events);
-        
-        if (extractedValues.length > currentParameters.length && currentOperatorKey !== 'operator1') {
-          const confirmSwitch = confirm(`⚠️ File PMR ini berisi ${extractedValues.length} cell data (kemungkinan Operator 1). Ganti pilihan operator ke Operator 1 otomatis?`);
-          if (confirmSwitch) {
-            document.getElementById('selectOperator').value = 'operator1';
-            loadParameter('operator1').then(() => {
-              fillExtractedValues(extractedValues);
-            });
+        const total = extractedValues.length;
+
+        // Auto-detect operator berdasarkan jumlah cell (OP1: 167, OP2: 51, OP3: 45)
+        let detectedOp = null;
+        if (total > 60 && currentOperatorKey !== 'operator1') {
+          detectedOp = 'operator1';
+        } else if (total >= 48 && total <= 60 && currentOperatorKey !== 'operator2') {
+          detectedOp = 'operator2';
+        } else if (total >= 35 && total <= 47 && currentOperatorKey !== 'operator3') {
+          detectedOp = 'operator3';
+        }
+
+        if (detectedOp) {
+          const labelOp = detectedOp === 'operator1'
+            ? 'Operator 1 (167 Parameter)'
+            : (detectedOp === 'operator2' ? 'Operator 2 (51 Parameter)' : 'Operator 3 (45 Parameter)');
+          if (confirm(`⚠️ File PMR ini berisi ${total} cell (cocok dengan ${labelOp}). Pindah ke ${labelOp} otomatis?`)) {
+            document.getElementById('selectOperator').value = detectedOp;
+            loadParameter(detectedOp).then(() => fillExtractedValues(extractedValues));
             return;
           }
         }
@@ -2579,6 +2591,7 @@ function importData(event) {
       }
 
       if (Array.isArray(json)) {
+        document.querySelectorAll('.excel-input').forEach(inp => inp.value = "");
         json.forEach((val, idx) => {
           if (idx < currentParameters.length) {
             const paramObj = currentParameters[idx];
@@ -2594,16 +2607,19 @@ function importData(event) {
       }
 
       alert('⚠️ Format file JSON/PMR tidak dikenali.');
-
     } catch (err) {
       alert('❌ Gagal membaca file PMR/JSON: ' + err.message);
+    } finally {
+      event.target.value = '';
     }
   };
   reader.readAsText(file);
 }
 
 function fillExtractedValues(extractedValues) {
+  document.querySelectorAll('.excel-input').forEach(inp => inp.value = "");
   let populatedCount = 0;
+
   extractedValues.forEach((val, idx) => {
     if (idx < currentParameters.length) {
       const paramObj = currentParameters[idx];
@@ -2614,30 +2630,30 @@ function fillExtractedValues(extractedValues) {
       }
     }
   });
+
   alert(`✅ Sukses membaca file PMR Macro! Terbaca ${extractedValues.length} cell (${populatedCount} cell terisi).`);
 }
 
 function parsePmrMacroEventsAccurate(events) {
-  const values = [];
-  let currentStr = "";
+  const cells = [""];
+  let colIndex = 0;
+  let justNavigated = true;
 
-  const navKeys = ['Key.right', 'Key.tab', 'Key.enter', 'Key.down', 'Key.return'];
+  const nextColKeys = ['Key.right', 'Key.tab', 'Key.enter', 'Key.return'];
+  const ignoreKeys = ['Key.up', 'Key.down'];
 
   const keyMap = {
-    'Key.period': '.',
-    'Key.decimal': '.',
-    'Key.numpad_decimal': '.',
-    'Key.kp_decimal': '.',
+    // Virtual Keycode Numpad & OEM Windows (<96> - <111>, <187> - <191>)
+    '<96>': '0', '<97>': '1', '<98>': '2', '<99>': '3', '<100>': '4',
+    '<101>': '5', '<102>': '6', '<103>': '7', '<104>': '8', '<105>': '9',
+    '<106>': '*', '<107>': '+', '<109>': '-', '<110>': '.', '<111>': '/',
+    '<187>': '+', '<188>': ',', '<189>': '-', '<190>': '.', '<191>': '/',
+    // Nama key standar
+    'Key.period': '.', 'Key.decimal': '.', 'Key.numpad_decimal': '.', 'Key.kp_decimal': '.',
     'Key.comma': ',',
-    'Key.minus': '-',
-    'Key.hyphen': '-',
-    'Key.numpad_subtract': '-',
-    'Key.kp_subtract': '-',
-    'Key.plus': '+',
-    'Key.numpad_add': '+',
-    'Key.slash': '/',
-    'Key.divide': '/',
-    'Key.numpad_divide': '/',
+    'Key.minus': '-', 'Key.hyphen': '-', 'Key.numpad_subtract': '-', 'Key.kp_subtract': '-',
+    'Key.plus': '+', 'Key.numpad_add': '+',
+    'Key.slash': '/', 'Key.divide': '/', 'Key.numpad_divide': '/',
     'Key.space': ' '
   };
 
@@ -2652,29 +2668,55 @@ function parsePmrMacroEventsAccurate(events) {
     if (ev.type === 'keyboardEvent' && ev.pressed === true) {
       const key = ev.key;
 
-      if (navKeys.includes(key)) {
-        values.push(currentStr);
-        currentStr = "";
+      if (nextColKeys.includes(key)) {
+        colIndex++;
+        while (cells.length <= colIndex) {
+          cells.push("");
+        }
+        justNavigated = true;
+      } else if (key === 'Key.left') {
+        if (colIndex > 0) colIndex--;
+        justNavigated = true;
+      } else if (ignoreKeys.includes(key)) {
+        justNavigated = true;
       } else if (key === 'Key.backspace') {
-        currentStr = currentStr.slice(0, -1);
-      } else if (keyMap[key] !== undefined) {
-        currentStr += keyMap[key];
-      } else if (key.startsWith('Key.')) {
-        return;
+        if (justNavigated) {
+          cells[colIndex] = "";
+          justNavigated = false;
+        } else {
+          cells[colIndex] = (cells[colIndex] || "").slice(0, -1);
+        }
       } else {
-        let cleanKey = key.replace(/'/g, "");
-        if (cleanKey.length === 1) {
-          currentStr += cleanKey;
+        let ch = null;
+        if (keyMap[key] !== undefined) {
+          ch = keyMap[key];
+        } else if (key.startsWith('Key.') || (key.startsWith('<') && key.endswith('>'))) {
+          return;
+        } else {
+          let cleanKey = key.replace(/'/g, "");
+          if (cleanKey.length === 1) {
+            ch = cleanKey;
+          }
+        }
+
+        if (ch !== null) {
+          if (justNavigated) {
+            cells[colIndex] = ch;
+            justNavigated = false;
+          } else {
+            cells[colIndex] = (cells[colIndex] || "") + ch;
+          }
         }
       }
     }
   });
 
-  if (currentStr !== "" || values.length > 0) {
-    values.push(currentStr);
+  // Buang sel kosong di paling akhir jika operator kelebihan pencet Key.right/Tab di akhir rekaman
+  while (cells.length > 1 && cells[cells.length - 1] === "") {
+    cells.pop();
   }
 
-  return values;
+  return cells;
 }
 
 function handleExport() {
