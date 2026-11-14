@@ -12,9 +12,9 @@
     "id": "p2",
     "index": 2,
     "equipment": "Temp. U-FA122",
-    "tag": "TG-802",
+    "tag": "TG-801",
     "unit": "°C",
-    "label": "Temp. U-FA122 (TG-802)",
+    "label": "Temp. U-FA122 (TG-801)",
     "type": "number"
   },
   {
@@ -66,9 +66,9 @@
     "id": "p8",
     "index": 8,
     "equipment": "L/O Pump GB101-GA122",
-    "tag": "U-GA122A",
-    "unit": "B",
-    "label": "L/O Pump GB101-GA122 (U-GA122A)",
+    "tag": "U-GA122A/B",
+    "unit": "A/B",
+    "label": "L/O Pump GB101-GA122 (U-GA122A/B)",
     "type": "number"
   },
   {
@@ -85,7 +85,7 @@
     "index": 10,
     "equipment": "Suct. Press. GA122A/B",
     "tag": "PG-801/802",
-    "unit": "Kg/cm ²",
+    "unit": "Kg/cm²",
     "label": "Suct. Press. GA122A/B (PG-801/802)",
     "type": "number"
   },
@@ -94,7 +94,7 @@
     "index": 11,
     "equipment": "Disc. Press. GA122A/B",
     "tag": "PG-804/805",
-    "unit": "Kg/cm ²",
+    "unit": "Kg/cm²",
     "label": "Disc. Press. GA122A/B (PG-804/805)",
     "type": "number"
   },
@@ -183,18 +183,18 @@
     "id": "p21",
     "index": 21,
     "equipment": "Return Condensate Pump U-GA107A/B",
-    "tag": "U-GA107A",
-    "unit": "B",
-    "label": "Return Condensate Pump U-GA107A/B (U-GA107A)",
+    "tag": "U-GA107A/B",
+    "unit": "A/B",
+    "label": "Return Condensate Pump U-GA107A/B (U-GA107A/B)",
     "type": "number"
   },
   {
     "id": "p22",
     "index": 22,
     "equipment": "Ampere U-GA107A/B",
-    "tag": "II-107A/B",
+    "tag": "06II-107A/B",
     "unit": "Amp",
-    "label": "Ampere U-GA107A/B (II-107A/B)",
+    "label": "Ampere U-GA107A/B (06II-107A/B)",
     "type": "number"
   },
   {
@@ -452,10 +452,10 @@
   {
     "id": "p51",
     "index": 51,
-    "equipment": "PRES PA IN",
+    "equipment": "PRESS. PA IN",
     "tag": "PG-721",
     "unit": "Kg/cm²",
-    "label": "PRES PA IN (PG-721)",
+    "label": "PRESS. PA IN (PG-721)",
     "type": "number"
   },
   {
@@ -553,7 +553,7 @@
     "index": 62,
     "equipment": "LABYRINTH SEAL",
     "tag": "PG-821",
-    "unit": "Kg/cm2",
+    "unit": "Kg/cm²",
     "label": "LABYRINTH SEAL (PG-821)",
     "type": "number"
   },
@@ -562,7 +562,7 @@
     "index": 63,
     "equipment": "LABYRINTH SEAL",
     "tag": "PG-822",
-    "unit": "Kg/cm2",
+    "unit": "Kg/cm²",
     "label": "LABYRINTH SEAL (PG-822)",
     "type": "number"
   },
@@ -571,7 +571,7 @@
     "index": 64,
     "equipment": "LABYRINTH SEAL",
     "tag": "PG-823",
-    "unit": "Kg/cm2",
+    "unit": "Kg/cm²",
     "label": "LABYRINTH SEAL (PG-823)",
     "type": "number"
   },
@@ -589,7 +589,7 @@
     "index": 66,
     "equipment": "TURBINE U-GT101",
     "tag": "PG-881",
-    "unit": "Kg/cm2",
+    "unit": "Kg/cm²",
     "label": "TURBINE U-GT101 (PG-881)",
     "type": "number"
   },
@@ -616,7 +616,7 @@
     "index": 69,
     "equipment": "TURBINE U-GT101",
     "tag": "PG-883",
-    "unit": "Kg/cm2",
+    "unit": "Kg/cm²",
     "label": "TURBINE U-GT101 (PG-883)",
     "type": "number"
   },
@@ -634,7 +634,7 @@
     "index": 71,
     "equipment": "TURBINE U-GT101",
     "tag": "PG-882",
-    "unit": "Kg/cm2",
+    "unit": "Kg/cm²",
     "label": "TURBINE U-GT101 (PG-882)",
     "type": "number"
   },
@@ -643,7 +643,7 @@
     "index": 72,
     "equipment": "TURBINE U-GT101",
     "tag": "PG-885",
-    "unit": "Kg/cm2",
+    "unit": "Kg/cm²",
     "label": "TURBINE U-GT101 (PG-885)",
     "type": "number"
   },
@@ -651,9 +651,9 @@
     "id": "p73",
     "index": 73,
     "equipment": "TURBINE U-GT101",
-    "tag": "TG-885",
+    "tag": "SI-885",
     "unit": "Krpm",
-    "label": "TURBINE U-GT101 (TG-885)",
+    "label": "TURBINE U-GT101 (SI-885)",
     "type": "number"
   },
   {
@@ -696,9 +696,9 @@
     "id": "p78",
     "index": 78,
     "equipment": "Ammonia Boost-up Pump",
-    "tag": "U-GA103A",
-    "unit": "B",
-    "label": "Ammonia Boost-up Pump (U-GA103A)",
+    "tag": "U-GA103A/B",
+    "unit": "A/B",
+    "label": "Ammonia Boost-up Pump (U-GA103A/B)",
     "type": "number"
   },
   {
@@ -722,19 +722,19 @@
   {
     "id": "p81",
     "index": 81,
-    "equipment": "Lvl. Glicol GA103A/B",
+    "equipment": "Lvl. Glycol GA103A/B",
     "tag": "LG-933/934",
     "unit": "%",
-    "label": "Lvl. Glicol GA103A/B (LG-933/934)",
+    "label": "Lvl. Glycol GA103A/B (LG-933/934)",
     "type": "number"
   },
   {
     "id": "p82",
     "index": 82,
-    "equipment": "Press. Glicol GA103A/B",
+    "equipment": "Press. Glycol GA103A/B",
     "tag": "PG-933/PG-934",
     "unit": "Kg/cm²",
-    "label": "Press. Glicol GA103A/B (PG-933/PG-934)",
+    "label": "Press. Glycol GA103A/B (PG-933/PG-934)",
     "type": "number"
   },
   {
@@ -742,7 +742,7 @@
     "index": 83,
     "equipment": "NH3 FEED PUMP U-GA101A/B",
     "tag": "06II-101A/B",
-    "unit": "amp",
+    "unit": "Amp",
     "label": "NH3 FEED PUMP U-GA101A/B (06II-101A/B)",
     "type": "text"
   },
@@ -787,7 +787,7 @@
     "index": 88,
     "equipment": "LUBE OIL SYSTEM U-GA101A/B",
     "tag": "PG-630",
-    "unit": "M Pa",
+    "unit": "MPa",
     "label": "LUBE OIL SYSTEM U-GA101A/B (PG-630)",
     "type": "text"
   },
@@ -796,7 +796,7 @@
     "index": 89,
     "equipment": "LUBE OIL SYSTEM U-GA101A/B",
     "tag": "PG-631",
-    "unit": "M Pa",
+    "unit": "MPa",
     "label": "LUBE OIL SYSTEM U-GA101A/B (PG-631)",
     "type": "text"
   },
@@ -814,7 +814,7 @@
     "index": 91,
     "equipment": "LUBE OIL SYSTEM U-GA101A/B",
     "tag": "PDG-630",
-    "unit": "M Pa",
+    "unit": "MPa",
     "label": "LUBE OIL SYSTEM U-GA101A/B (PDG-630)",
     "type": "text"
   },
@@ -929,28 +929,28 @@
   {
     "id": "p104",
     "index": 104,
-    "equipment": "CARBAMAT FEED PUMP U-GA102A/B",
+    "equipment": "CARBAMATE FEED PUMP U-GA102A/B",
     "tag": "06II-102A/B",
     "unit": "Amp",
-    "label": "CARBAMAT FEED PUMP U-GA102A/B (06II-102A/B)",
+    "label": "CARBAMATE FEED PUMP U-GA102A/B (06II-102A/B)",
     "type": "text"
   },
   {
     "id": "p105",
     "index": 105,
-    "equipment": "CARBAMAT FEED PUMP U-GA102A/B",
+    "equipment": "CARBAMATE FEED PUMP U-GA102A/B",
     "tag": "PG-116",
     "unit": "Kg/cm²",
-    "label": "CARBAMAT FEED PUMP U-GA102A/B (PG-116)",
+    "label": "CARBAMATE FEED PUMP U-GA102A/B (PG-116)",
     "type": "text"
   },
   {
     "id": "p106",
     "index": 106,
-    "equipment": "CARBAMAT FEED PUMP U-GA102A/B",
+    "equipment": "CARBAMATE FEED PUMP U-GA102A/B",
     "tag": "PG-106",
     "unit": "MPa",
-    "label": "CARBAMAT FEED PUMP U-GA102A/B (PG-106)",
+    "label": "CARBAMATE FEED PUMP U-GA102A/B (PG-106)",
     "type": "text"
   },
   {
@@ -976,7 +976,7 @@
     "index": 109,
     "equipment": "LUBE OIL SYSTEM U-GA102A/B",
     "tag": "PG-680",
-    "unit": "M Pa",
+    "unit": "MPa",
     "label": "LUBE OIL SYSTEM U-GA102A/B (PG-680)",
     "type": "text"
   },
@@ -985,7 +985,7 @@
     "index": 110,
     "equipment": "LUBE OIL SYSTEM U-GA102A/B",
     "tag": "PG-681",
-    "unit": "M Pa",
+    "unit": "MPa",
     "label": "LUBE OIL SYSTEM U-GA102A/B (PG-681)",
     "type": "text"
   },
@@ -1003,7 +1003,7 @@
     "index": 112,
     "equipment": "LUBE OIL SYSTEM U-GA102A/B",
     "tag": "PG-682",
-    "unit": "M Pa",
+    "unit": "MPa",
     "label": "LUBE OIL SYSTEM U-GA102A/B (PG-682)",
     "type": "text"
   },
@@ -1012,7 +1012,7 @@
     "index": 113,
     "equipment": "LUBE OIL SYSTEM U-GA102A/B",
     "tag": "PDG-680",
-    "unit": "M Pa",
+    "unit": "MPa",
     "label": "LUBE OIL SYSTEM U-GA102A/B (PDG-680)",
     "type": "text"
   },
@@ -1352,28 +1352,28 @@
   {
     "id": "p151",
     "index": 151,
-    "equipment": "CARBONATE SOLUTION TANK U-GA403",
+    "equipment": "CARBONATE SOLUTION PUMP U-GA403",
     "tag": "FI-403",
     "unit": "Ton/h",
-    "label": "CARBONATE SOLUTION TANK U-GA403 (FI-403)",
+    "label": "CARBONATE SOLUTION PUMP U-GA403 (FI-403)",
     "type": "number"
   },
   {
     "id": "p152",
     "index": 152,
-    "equipment": "CARBAMAT BOOST-UP PUMP U-GA401",
+    "equipment": "CARBAMATE BOOST-UP PUMP U-GA401",
     "tag": "06II-401A/B",
     "unit": "Amp",
-    "label": "CARBAMAT BOOST-UP PUMP U-GA401 (06II-401A/B)",
+    "label": "CARBAMATE BOOST-UP PUMP U-GA401 (06II-401A/B)",
     "type": "text"
   },
   {
     "id": "p153",
     "index": 153,
-    "equipment": "CARBAMAT BOOST-UP PUMP U-GA401",
+    "equipment": "CARBAMATE BOOST-UP PUMP U-GA401",
     "tag": "PG-401",
     "unit": "Kg/cm²",
-    "label": "CARBAMAT BOOST-UP PUMP U-GA401 (PG-401)",
+    "label": "CARBAMATE BOOST-UP PUMP U-GA401 (PG-401)",
     "type": "text"
   },
   {
@@ -1434,9 +1434,9 @@
     "id": "p160",
     "index": 160,
     "equipment": "N2 COMPRESSOR U-GB701",
-    "tag": "06-II171A/B",
+    "tag": "06II-171A/B",
     "unit": "Amp",
-    "label": "N2 COMPRESSOR U-GB701 (06-II171A/B)",
+    "label": "N2 COMPRESSOR U-GB701 (06II-171A/B)",
     "type": "text"
   },
   {

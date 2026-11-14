@@ -22,7 +22,7 @@
     "index": 3,
     "equipment": "U-GA302",
     "tag": "PG-304",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-GA302 (PG-304)",
     "type": "number"
   },
@@ -31,7 +31,7 @@
     "index": 4,
     "equipment": "U-GA302",
     "tag": "PG-305",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-GA302 (PG-305)",
     "type": "number"
   },
@@ -40,7 +40,7 @@
     "index": 5,
     "equipment": "Ampere U-GB302",
     "tag": "06II-132",
-    "unit": "Amp.",
+    "unit": "Amp",
     "label": "Ampere U-GB302 (06II-132)",
     "type": "number"
   },
@@ -58,7 +58,7 @@
     "index": 7,
     "equipment": "U-GB302",
     "tag": "PG-310",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-GB302 (PG-310)",
     "type": "number"
   },
@@ -85,7 +85,7 @@
     "index": 10,
     "equipment": "Ampere U-GB301 A",
     "tag": "06II-131A",
-    "unit": "Amp.",
+    "unit": "Amp",
     "label": "Ampere U-GB301 A (06II-131A)",
     "type": "number"
   },
@@ -94,7 +94,7 @@
     "index": 11,
     "equipment": "Ampere U-GB301 B",
     "tag": "06II-131B",
-    "unit": "Amp.",
+    "unit": "Amp",
     "label": "Ampere U-GB301 B (06II-131B)",
     "type": "number"
   },
@@ -103,7 +103,7 @@
     "index": 12,
     "equipment": "Ampere U-GB301 C",
     "tag": "06II-131C",
-    "unit": "Amp.",
+    "unit": "Amp",
     "label": "Ampere U-GB301 C (06II-131C)",
     "type": "number"
   },
@@ -112,7 +112,7 @@
     "index": 13,
     "equipment": "Ampere U-GB301 D",
     "tag": "06II-131D",
-    "unit": "Amp.",
+    "unit": "Amp",
     "label": "Ampere U-GB301 D (06II-131D)",
     "type": "number"
   },
@@ -148,7 +148,7 @@
     "index": 17,
     "equipment": "Ampere U-GA301 A/B",
     "tag": "06II-301A/B",
-    "unit": "Amp.",
+    "unit": "Amp",
     "label": "Ampere U-GA301 A/B (06II-301A/B)",
     "type": "number"
   },
@@ -157,7 +157,7 @@
     "index": 18,
     "equipment": "U-GA301",
     "tag": "PG-302",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-GA301 (PG-302)",
     "type": "number"
   },
@@ -166,7 +166,7 @@
     "index": 19,
     "equipment": "U-GA301",
     "tag": "PG-306",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-GA301 (PG-306)",
     "type": "number"
   },
@@ -202,7 +202,7 @@
     "index": 23,
     "equipment": "U-FA301",
     "tag": "PG-309",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-FA301 (PG-309)",
     "type": "number"
   },
@@ -238,7 +238,7 @@
     "index": 27,
     "equipment": "Press. Disc. U-GA803",
     "tag": "PG-761",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "Press. Disc. U-GA803 (PG-761)",
     "type": "number"
   },
@@ -274,7 +274,7 @@
     "index": 31,
     "equipment": "Press. Disc. U-GA801",
     "tag": "PG-751",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "Press. Disc. U-GA801 (PG-751)",
     "type": "number"
   },
@@ -319,7 +319,7 @@
     "index": 36,
     "equipment": "Ampere U-GA501A/B",
     "tag": "06II-501A/B",
-    "unit": "Amp.",
+    "unit": "Amp",
     "label": "Ampere U-GA501A/B (06II-501A/B)",
     "type": "number"
   },
@@ -328,7 +328,7 @@
     "index": 37,
     "equipment": "Press. Disc. U-GA501A/B",
     "tag": "PG-504",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "Press. Disc. U-GA501A/B (PG-504)",
     "type": "number"
   },
@@ -337,7 +337,7 @@
     "index": 38,
     "equipment": "Ampere U-GA502A/B",
     "tag": "06II-502A/B",
-    "unit": "Amp.",
+    "unit": "Amp",
     "label": "Ampere U-GA502A/B (06II-502A/B)",
     "type": "number"
   },
@@ -346,7 +346,7 @@
     "index": 39,
     "equipment": "Press. Disc. U-GA502A/B",
     "tag": "PG-508",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "Press. Disc. U-GA502A/B (PG-508)",
     "type": "number"
   },
@@ -355,7 +355,7 @@
     "index": 40,
     "equipment": "Ampere U-GA503A/B",
     "tag": "06II-503A/B",
-    "unit": "Amp.",
+    "unit": "Amp",
     "label": "Ampere U-GA503A/B (06II-503A/B)",
     "type": "number"
   },
@@ -364,7 +364,7 @@
     "index": 41,
     "equipment": "Press. Disc. U-GA503A/B",
     "tag": "PG-509",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "Press. Disc. U-GA503A/B (PG-509)",
     "type": "number"
   },
@@ -390,9 +390,9 @@
     "id": "p44",
     "index": 44,
     "equipment": "Ampere U-GA303A/B",
-    "tag": "06-II303A/B",
-    "unit": "Amp.",
-    "label": "Ampere U-GA303A/B (06-II303A/B)",
+    "tag": "06II-303A/B",
+    "unit": "Amp",
+    "label": "Ampere U-GA303A/B (06II-303A/B)",
     "type": "number"
   },
   {
@@ -400,7 +400,7 @@
     "index": 45,
     "equipment": "Press. Disc. U-GA303A/B",
     "tag": "PG-514",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "Press. Disc. U-GA303A/B (PG-514)",
     "type": "number"
   }

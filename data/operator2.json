@@ -4,7 +4,7 @@
     "index": 1,
     "equipment": "U-EA101",
     "tag": "PG-101",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-EA101 (PG-101)",
     "type": "number"
   },
@@ -22,7 +22,7 @@
     "index": 3,
     "equipment": "U-EA103",
     "tag": "PG-108",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-EA103 (PG-108)",
     "type": "number"
   },
@@ -31,7 +31,7 @@
     "index": 4,
     "equipment": "U-FA101",
     "tag": "PG-107",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-FA101 (PG-107)",
     "type": "number"
   },
@@ -49,7 +49,7 @@
     "index": 6,
     "equipment": "U-FA102",
     "tag": "PG-104",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-FA102 (PG-104)",
     "type": "number"
   },
@@ -67,7 +67,7 @@
     "index": 8,
     "equipment": "U-FA102",
     "tag": "FI-110AA",
-    "unit": "t/h",
+    "unit": "Ton/h",
     "label": "U-FA102 (FI-110AA)",
     "type": "number"
   },
@@ -85,7 +85,7 @@
     "index": 10,
     "equipment": "U-FA105",
     "tag": "PG-117",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-FA105 (PG-117)",
     "type": "number"
   },
@@ -103,7 +103,7 @@
     "index": 12,
     "equipment": "U-DA201",
     "tag": "PG-203",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-DA201 (PG-203)",
     "type": "number"
   },
@@ -130,7 +130,7 @@
     "index": 15,
     "equipment": "U-DA202",
     "tag": "PG-204",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-DA202 (PG-204)",
     "type": "number"
   },
@@ -148,7 +148,7 @@
     "index": 17,
     "equipment": "U-EA201",
     "tag": "PG-209",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-EA201 (PG-209)",
     "type": "number"
   },
@@ -175,7 +175,7 @@
     "index": 20,
     "equipment": "U-EA202",
     "tag": "PG-212",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-EA202 (PG-212)",
     "type": "number"
   },
@@ -211,7 +211,7 @@
     "index": 24,
     "equipment": "U-EE201",
     "tag": "PG-211",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-EE201 (PG-211)",
     "type": "number"
   },
@@ -229,7 +229,7 @@
     "index": 26,
     "equipment": "U-GA204",
     "tag": "06II-204A/B",
-    "unit": "Amp.",
+    "unit": "Amp",
     "label": "U-GA204 (06II-204A/B)",
     "type": "number"
   },
@@ -238,7 +238,7 @@
     "index": 27,
     "equipment": "U-GA204",
     "tag": "PG-213",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-GA204 (PG-213)",
     "type": "number"
   },
@@ -247,7 +247,7 @@
     "index": 28,
     "equipment": "U-EA401",
     "tag": "PG-202",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-EA401 (PG-202)",
     "type": "number"
   },
@@ -256,7 +256,7 @@
     "index": 29,
     "equipment": "U-EA401",
     "tag": "PG-406",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-EA401 (PG-406)",
     "type": "number"
   },
@@ -301,7 +301,7 @@
     "index": 34,
     "equipment": "Press. U-FA402",
     "tag": "PG-408",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "Press. U-FA402 (PG-408)",
     "type": "number"
   },
@@ -317,10 +317,10 @@
   {
     "id": "p36",
     "index": 36,
-    "equipment": "U-EA403A/B",
+    "equipment": "U-EA403",
     "tag": "U-EA403A/B",
     "unit": "A/B",
-    "label": "U-EA403A/B (U-EA403A/B)",
+    "label": "U-EA403 (U-EA403A/B)",
     "type": "number"
   },
   {
@@ -418,7 +418,7 @@
     "index": 47,
     "equipment": "U-EE501",
     "tag": "PG-214",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-EE501 (PG-214)",
     "type": "number"
   },
@@ -427,7 +427,7 @@
     "index": 48,
     "equipment": "U-EE502",
     "tag": "PG-215",
-    "unit": "kg/cm2G",
+    "unit": "Kg/cm²",
     "label": "U-EE502 (PG-215)",
     "type": "number"
   },

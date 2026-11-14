@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
-  <title>PMR Editor</title>
+  <meta name="theme-color" content="#0f172a">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <title>PMR Editor v1.2</title>
   <style>
     :root {
       --bg-primary: #0f172a;
@@ -13,13 +15,14 @@
       --bg-input: #334155;
       --accent: #10b981;
       --accent-hover: #059669;
+      --share-accent: #0ea5e9;
+      --share-hover: #0284c7;
+      --warning: #f59e0b;
+      --danger: #ef4444;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --border-color: #334155;
-      --excel-header: #0f172a;
       --excel-border: #475569;
-      --excel-bg: #1e293b;
-      --excel-hover: #334155;
     }
 
     * {
@@ -32,7 +35,7 @@
     body {
       background-color: var(--bg-primary);
       color: var(--text-main);
-      padding: 15px;
+      padding: 14px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -42,6 +45,9 @@
       max-width: 100%;
       margin: 0 auto;
       width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
@@ -49,42 +55,97 @@
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
       border-bottom: 1px solid var(--border-color);
     }
 
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.45rem;
       color: var(--accent);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .version-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.3px;
+    }
+
+    .offline-pill {
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: rgba(245, 158, 11, 0.16);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 2px 8px;
+      border-radius: 999px;
+      display: none;
+    }
+
+    .header-status {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .filled-badge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .filled-badge.complete {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.4);
     }
 
     .controls-bar {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
       background: var(--bg-card);
-      padding: 14px 18px;
+      padding: 14px 16px;
       border-radius: 12px;
       border: 1px solid var(--border-color);
-      align-items: center;
+      align-items: flex-end;
     }
 
     .control-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
       flex: 1;
-      min-width: 180px;
+      min-width: 165px;
     }
 
     label {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       font-weight: 500;
     }
@@ -93,11 +154,12 @@
       background-color: var(--bg-input);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 9px 13px;
+      padding: 9px 12px;
       border-radius: 8px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
-      transition: all 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
     }
 
     select:focus, input[type="text"]:focus {
@@ -105,25 +167,57 @@
       box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
     }
 
+    .search-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input-wrap input {
+      padding-right: 32px;
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 8px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      cursor: pointer;
+      padding: 2px 5px;
+      display: none;
+    }
+
+    .clear-search-btn:hover {
+      color: var(--text-main);
+    }
+
     .action-buttons {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
-      align-self: flex-end;
+      align-items: center;
     }
 
     .btn {
-      padding: 9px 16px;
+      padding: 9px 13px;
       border-radius: 8px;
       border: none;
       font-weight: 600;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
       text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
     }
 
     .btn-primary {
@@ -135,29 +229,50 @@
       background-color: var(--accent-hover);
     }
 
+    .btn-share {
+      background-color: var(--share-accent);
+      color: #0f172a;
+    }
+
+    .btn-share:hover {
+      background-color: var(--share-hover);
+    }
+
     .btn-secondary {
       background-color: #475569;
-      color: white;
+      color: #ffffff;
     }
 
     .btn-secondary:hover {
       background-color: #334155;
     }
 
-    .btn-outline {
-      background-color: transparent;
-      border: 1px solid var(--accent);
+    .btn-ghost {
+      background-color: rgba(51, 65, 85, 0.65);
+      border: 1px solid var(--border-color);
+      color: #e2e8f0;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
       color: var(--accent);
     }
 
-    .btn-outline:hover {
-      background-color: rgba(16, 185, 129, 0.1);
+    .btn-danger-ghost {
+      background-color: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .btn-danger-ghost:hover {
+      background-color: rgba(239, 68, 68, 0.2);
+      border-color: var(--danger);
     }
 
     .file-input-wrapper {
       position: relative;
       overflow: hidden;
-      display: inline-block;
+      display: inline-flex;
     }
 
     .file-input-wrapper input[type=file] {
@@ -167,9 +282,68 @@
       top: 0;
       opacity: 0;
       cursor: pointer;
+      width: 100%;
+      height: 100%;
     }
 
-    /* EXCEL-LIKE HORIZONTAL TABLE LAYOUT */
+    .export-wrapper {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .export-wrapper select {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 9px 10px;
+      font-size: 0.85rem;
+      width: auto;
+      cursor: pointer;
+    }
+
+    .export-wrapper select option {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+    }
+
+    .export-wrapper .btn-primary {
+      border-radius: 0;
+      margin-left: -1px;
+    }
+
+    .export-wrapper .btn-share {
+      border-radius: 0 7px 7px 0;
+      border-left: 1px solid rgba(15, 23, 42, 0.2);
+    }
+
+    /* Quick Utility Toolbar */
+    .quick-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .toolbar-left, .toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .filter-info {
+      font-size: 0.8rem;
+      color: #fbbf24;
+      display: none;
+    }
+
+    /* HORIZONTAL EXCEL-LIKE GRID (DESKTOP DEFAULT) */
     .excel-container {
       width: 100%;
       overflow-x: auto;
@@ -178,7 +352,7 @@
       border: 1px solid var(--border-color);
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .excel-table {
@@ -192,7 +366,7 @@
       padding: 8px 10px;
       text-align: center;
       white-space: nowrap;
-      min-width: 140px;
+      min-width: 138px;
       max-width: 220px;
     }
 
@@ -200,12 +374,9 @@
       background-color: #0f172a;
       color: var(--accent);
       font-weight: 700;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       border-bottom: 2px solid var(--accent);
       padding: 10px 12px;
-      position: sticky;
-      top: 0;
-      z-index: 2;
     }
 
     .excel-table th.tag-header {
@@ -227,27 +398,150 @@
       padding: 6px 8px;
     }
 
-    /* Input cell tetap konstan tanpa efek hover menyala */
+    /* VERTICAL TABLE LAYOUT (MOBILE DEFAULT / TOGGLEABLE) */
+    .vertical-container {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .vertical-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+
+    .vertical-table thead th {
+      background-color: #0f172a;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 10px 10px;
+      border-bottom: 2px solid var(--accent);
+      text-align: left;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .vertical-table thead th.col-no {
+      width: 46px;
+      text-align: center;
+    }
+
+    .vertical-table thead th.col-val {
+      width: 124px;
+      text-align: center;
+    }
+
+    .vertical-table tbody tr {
+      border-bottom: 1px solid var(--border-color);
+      background-color: #162033;
+      transition: background-color 0.12s;
+    }
+
+    .vertical-table tbody tr:nth-child(even) {
+      background-color: #1b263b;
+    }
+
+    .vertical-table tbody tr.row-highlight {
+      background-color: rgba(245, 158, 11, 0.14);
+    }
+
+    .vertical-table td {
+      padding: 8px 10px;
+      vertical-align: middle;
+    }
+
+    .vertical-table td.cell-tap-target {
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: rgba(16, 185, 129, 0.14);
+    }
+
+    .vertical-table td.cell-tap-target:active {
+      background-color: rgba(16, 185, 129, 0.12);
+    }
+
+    .vertical-table td.cell-no {
+      text-align: center;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .param-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .param-eq {
+      font-weight: 700;
+      color: #f1f5f9;
+      font-size: 0.84rem;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .param-sub {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+    }
+
+    .param-tag {
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    .param-unit-pill {
+      background-color: rgba(16, 185, 129, 0.14);
+      color: #6ee7b7;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    /* SHARED CELL INPUT & SELECT STYLING */
     .excel-input {
       width: 100%;
       background-color: var(--bg-input);
       border: 1px solid var(--border-color);
       color: #ffffff;
-      padding: 8px 10px;
+      padding: 8px 8px;
       border-radius: 6px;
       font-size: 0.9rem;
       text-align: center;
       font-weight: 600;
       outline: none;
-      transition: all 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
 
-    .excel-input:hover {
-      background-color: var(--bg-input);
-      border-color: var(--border-color);
+    select.excel-input {
+      padding: 8px 4px;
+      cursor: pointer;
+    }
+
+    .excel-input.cell-empty {
+      border: 1px dashed #64748b;
+      background-color: rgba(51, 65, 85, 0.55);
+    }
+
+    .excel-input.cell-warning {
+      border-color: var(--warning);
+      color: #fbbf24;
     }
 
     .excel-input:focus {
+      border-style: solid;
       border-color: var(--accent);
       background-color: #1e293b;
       box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
@@ -255,8 +549,9 @@
     }
 
     .excel-input.highlight {
+      border-style: solid;
       border-color: #f59e0b;
-      background-color: rgba(245, 158, 11, 0.15);
+      background-color: rgba(245, 158, 11, 0.18);
     }
 
     .col-index {
@@ -282,6 +577,85 @@
     .excel-container::-webkit-scrollbar-thumb:hover {
       background: #10b981;
     }
+
+    /* Footer Credit */
+    footer.app-footer {
+      margin-top: auto;
+      padding-top: 14px;
+      padding-bottom: 2px;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 0.78rem;
+      color: #888888;
+      line-height: 1.55;
+    }
+
+    /* Mobile Responsive Refinements */
+    @media (max-width: 767px) {
+      body {
+        padding: 10px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+      }
+
+      h1 {
+        font-size: 1.28rem;
+      }
+
+      .header-status {
+        width: 100%;
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .status-row {
+        justify-content: flex-start;
+      }
+
+      .controls-bar {
+        padding: 12px;
+        gap: 10px;
+      }
+
+      .control-group {
+        min-width: calc(50% - 6px);
+      }
+
+      .control-group.search-group {
+        min-width: 100%;
+      }
+
+      .action-buttons {
+        width: 100%;
+      }
+
+      .file-input-wrapper, .file-input-wrapper .btn {
+        flex: 1;
+      }
+
+      .export-wrapper {
+        flex: 2.3;
+      }
+
+      .export-wrapper select {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .vertical-table thead th.col-val {
+        width: 112px;
+      }
+
+      .vertical-table td {
+        padding: 7px 8px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -289,12 +663,20 @@
   <div class="app-container">
     <header>
       <div>
-        <h1>📝 PMR Editor <span id="totalCellBadge" style="display:none;"></span></h1>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Web App file PMR Editor untuk DILOC Pabrik Urea 1B</p>
+        <h1>
+          📝 PMR Editor
+          <span class="version-badge">v1.2</span>
+          <span id="offlineBadge" class="offline-pill">📡 Offline Mode</span>
+          <span id="totalCellBadge" style="display:none;"></span>
+        </h1>
+        <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 3px;">Editor Macro Logsheet DILOC Pabrik Urea 1B</p>
       </div>
-      <div style="text-align: right;">
-        <div id="statusInfo" style="font-size: 0.9rem; color: var(--accent); font-weight: 600;">Memuat parameter...</div>
-        <div id="importedFileInfo" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; display: none;"></div>
+      <div class="header-status">
+        <div class="status-row">
+          <div id="statusInfo" style="font-size: 0.86rem; color: var(--accent); font-weight: 600;">Memuat parameter...</div>
+          <span id="filledCountBadge" class="filled-badge">Terisi: 0 / 0 Cell</span>
+        </div>
+        <div id="importedFileInfo" style="font-size: 0.78rem; color: var(--text-muted); display: none;"></div>
       </div>
     </header>
 
@@ -302,9 +684,9 @@
       <div class="control-group">
         <label for="selectOperator">Pilih Operator</label>
         <select id="selectOperator" onchange="loadParameter(this.value)">
-          <option value="operator1" selected>Operator 1</option>
-          <option value="operator2">Operator 2</option>
-          <option value="operator3">Operator 3</option>
+          <option value="operator1" selected>Operator 1 (167)</option>
+          <option value="operator2">Operator 2 (51)</option>
+          <option value="operator3">Operator 3 (45)</option>
         </select>
       </div>
 
@@ -317,29 +699,45 @@
         </select>
       </div>
 
-      <div class="control-group" style="flex: 2;">
-        <label for="searchInput">Cari & Jump Tag / Equipment</label>
-        <input type="text" id="searchInput" placeholder="Ketik tag, equipment (cth: LG-801, U-EA122...)" oninput="filterParameters()">
+      <div class="control-group search-group" style="flex: 2;">
+        <label for="searchInput">Cari Tag / Equipment</label>
+        <div class="search-input-wrap">
+          <input type="text" id="searchInput" placeholder="Ketik tag atau equipment (cth: LG-801, GA504...)" oninput="filterParameters()">
+          <button type="button" id="clearSearchBtn" class="clear-search-btn" title="Hapus pencarian" onclick="clearSearch()">✕</button>
+        </div>
       </div>
 
       <div class="action-buttons">
         <div class="file-input-wrapper">
-          <button class="btn btn-secondary">📂 Import PMR / JSON</button>
+          <button type="button" class="btn btn-secondary">📂 Import</button>
           <input type="file" id="importFileInput" accept=".pmr,.json" onchange="importData(event)">
         </div>
 
-        <div class="export-wrapper" style="display: inline-flex; align-items: center; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;">
-          <select id="exportFormat" style="background: transparent; border: none; color: var(--text-main); padding: 9px 10px; font-size: 0.88rem; outline: none; cursor: pointer;">
+        <div class="export-wrapper">
+          <select id="exportFormat" title="Pilih format file export">
             <option value="pmr" selected>⚡ Macro PMR (.pmr)</option>
-            <option value="json">💾 Backup JSON (.json)</option>
+            <option value="webrunner">🌐 Web Runner (.json)</option>
+            <option value="json">💾 Backup Data (.json)</option>
           </select>
-          <button class="btn btn-primary" style="border-radius: 0 7px 7px 0; margin-left: -1px;" onclick="handleExport()">💾 Export File</button>
+          <button type="button" class="btn btn-primary" onclick="handleExport()">💾 Export</button>
+          <button type="button" class="btn btn-share" title="Kirim langsung via LocalSend / Share HP" onclick="handleShare()">📤 Share</button>
         </div>
       </div>
     </div>
 
+    <div class="quick-toolbar">
+      <div class="toolbar-left">
+        <button type="button" id="toggleViewBtn" class="btn btn-ghost" onclick="toggleViewMode()">📱 Mode: Vertikal</button>
+        <button type="button" class="btn btn-ghost" onclick="jumpToNextEmpty()">🔍 Sel Kosong</button>
+        <button type="button" class="btn btn-danger-ghost" onclick="resetFormConfirm()">🗑️ Reset</button>
+      </div>
+      <div class="toolbar-right">
+        <span id="filterMatchInfo" class="filter-info"></span>
+      </div>
+    </div>
+
     <form id="pmrForm" onsubmit="event.preventDefault();">
-      <!-- Horizontal Scrollable Excel Grid -->
+      <!-- Horizontal Scrollable Excel Grid (PC Default) -->
       <div class="excel-container" id="excelScrollContainer">
         <table class="excel-table" id="excelTable">
           <thead>
@@ -352,9 +750,36 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Vertical Table Layout (Mobile Default) -->
+      <div class="vertical-container" id="verticalScrollContainer" style="display: none;">
+        <table class="vertical-table" id="verticalTable">
+          <thead>
+            <tr>
+              <th class="col-no">#</th>
+              <th>Equipment &amp; Tag (Tap baris untuk isi)</th>
+              <th class="col-val">Nilai</th>
+            </tr>
+          </thead>
+          <tbody id="verticalBodyRows"></tbody>
+        </table>
+      </div>
     </form>
+
+    <footer class="app-footer">
+      © 2026 — Developed by FIKRI
+    </footer>
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=1.2"></script>
+  <script>
+    if ('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch((err) => {
+          console.warn('SW registration skipped:', err.message);
+        });
+      });
+    }
+  </script>
 </body>
 </html>
