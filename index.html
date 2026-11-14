@@ -4,8 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PMR Editor">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <title>PMR Editor</title>
   <style>
     :root {
@@ -103,7 +108,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 5px;
+      gap: 6px;
     }
 
     .status-row {
@@ -115,13 +120,14 @@
     }
 
     .filled-badge {
-      font-size: 0.8rem;
+      font-size: 0.79rem;
       font-weight: 700;
       padding: 4px 11px;
       border-radius: 999px;
       background: rgba(245, 158, 11, 0.15);
       color: #fbbf24;
       border: 1px solid rgba(245, 158, 11, 0.35);
+      white-space: nowrap;
     }
 
     .filled-badge.complete {
@@ -131,31 +137,75 @@
     }
 
     .draft-badge {
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      padding: 3px 9px;
+      padding: 4px 10px;
       border-radius: 999px;
       background: rgba(16, 185, 129, 0.12);
       color: #6ee7b7;
       border: 1px solid rgba(16, 185, 129, 0.3);
-      opacity: 0;
-      transition: opacity 0.25s ease;
-      pointer-events: none;
+      display: none;
+      white-space: nowrap;
+      transition: background-color 0.25s ease;
     }
 
     .draft-badge.visible {
-      opacity: 0.92;
+      display: inline-flex;
+      align-items: center;
     }
 
     .draft-badge.pulse {
-      opacity: 1;
-      background: rgba(16, 185, 129, 0.24);
+      background: rgba(16, 185, 129, 0.26);
     }
 
     .imported-file-info {
       font-size: 0.78rem;
       color: var(--text-muted);
       display: none;
+      align-items: center;
+      gap: 6px;
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid var(--border-color);
+      padding: 3px 8px 3px 10px;
+      border-radius: 999px;
+      max-width: 100%;
+    }
+
+    .imported-file-info.visible {
+      display: inline-flex;
+    }
+
+    .imported-file-name {
+      color: #e2e8f0;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 240px;
+    }
+
+    .unload-file-btn {
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid rgba(239, 68, 68, 0.38);
+      color: #fca5a5;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background-color 0.15s, border-color 0.15s;
+    }
+
+    .unload-file-btn:hover {
+      background: rgba(239, 68, 68, 0.32);
+      border-color: var(--danger);
+      color: #ffffff;
     }
 
     .controls-bar {
@@ -256,13 +306,6 @@
 
     .clear-search-btn:hover {
       color: var(--text-main);
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
     }
 
     .btn {
@@ -397,7 +440,7 @@
       align-items: center;
       gap: 8px;
       margin-bottom: 12px;
-      padding: 8px 10px;
+      padding: 8px 12px;
       background-color: rgba(15, 23, 42, 0.94);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
@@ -412,11 +455,28 @@
       padding: 0 11px;
     }
 
-    .toolbar-left, .toolbar-right {
+    .toolbar-status-row {
+      display: none;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-left {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       align-items: center;
+    }
+
+    .toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-left: auto;
     }
 
     .filter-info {
@@ -682,6 +742,11 @@
       animation: popUp 0.18s ease-out;
     }
 
+    .modal-card.update-card {
+      border-color: rgba(16, 185, 129, 0.65);
+      box-shadow: 0 20px 50px rgba(16, 185, 129, 0.18), 0 12px 30px rgba(0, 0, 0, 0.6);
+    }
+
     .modal-header {
       display: flex;
       align-items: center;
@@ -857,8 +922,17 @@
         text-align: left;
       }
 
+      .header-status:empty,
+      .header-status:not(:has(.visible)) {
+        display: none;
+      }
+
       .status-row {
         justify-content: flex-start;
+      }
+
+      .imported-file-name {
+        max-width: 210px;
       }
 
       .controls-bar {
@@ -925,12 +999,26 @@
       }
 
       .quick-toolbar {
-        padding: 7px 8px;
+        padding: 8px 8px;
         border-radius: 0 0 10px 10px;
         margin-left: -10px;
         margin-right: -10px;
         border-left: none;
         border-right: none;
+        gap: 7px;
+      }
+
+      .toolbar-status-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 7px;
+      }
+
+      .toolbar-status-row .filled-badge,
+      .toolbar-status-row .draft-badge {
+        font-size: 0.74rem;
+        padding: 3px 9px;
       }
 
       .toolbar-left {
@@ -949,11 +1037,10 @@
       .toolbar-right {
         width: 100%;
         justify-content: center;
+        margin-left: 0;
       }
 
-      .toolbar-right:empty,
-      .toolbar-right:has(.filter-info[style*="display: none"]),
-      .toolbar-right:has(.filter-info:not([style*="display: inline"])) {
+      .toolbar-right:not(:has(.filter-info[style*="display: inline"])) {
         display: none;
       }
 
@@ -978,17 +1065,21 @@
       <div>
         <h1>
           📝 PMR Editor
-          <span class="version-badge">v1.4.1</span>
+          <span class="version-badge">v1.5.0</span>
           <span id="offlineBadge" class="offline-pill">📡 Offline Mode</span>
         </h1>
         <p class="subtitle-text">Editor Macro Logsheet DILOC Pabrik Urea 1B</p>
       </div>
-      <div class="header-status">
-        <div class="status-row">
-          <span id="filledCountBadge" class="filled-badge">Terisi: 0 / 0 Cell</span>
+      <div class="header-status" id="headerStatusContainer">
+        <div class="status-row" id="headerDraftSlot">
           <span id="draftSavedBadge" class="draft-badge" aria-live="polite">✓ Draft tersimpan</span>
         </div>
-        <div id="importedFileInfo" class="imported-file-info"></div>
+        <div id="importedFileInfo" class="imported-file-info">
+          <span id="importedFileIcon">📄</span>
+          <span id="importedFilePrefix">File aktif:</span>
+          <span id="importedFileName" class="imported-file-name"></span>
+          <button type="button" id="unloadFileBtn" class="unload-file-btn" title="Lepas file aktif &amp; kosongkan tabel" onclick="unloadActiveFileConfirm()">✕</button>
+        </div>
       </div>
     </header>
 
@@ -1020,7 +1111,7 @@
 
       <div class="file-input-wrapper import-group">
         <button type="button" class="btn btn-secondary">📂 Import</button>
-        <input type="file" id="importFileInput" accept=".pmr,.json" onchange="importData(event)">
+        <input type="file" id="importFileInput" onchange="importData(event)">
       </div>
 
       <div class="export-wrapper export-group">
@@ -1033,13 +1124,15 @@
     </div>
 
     <div class="quick-toolbar">
+      <div class="toolbar-status-row" id="mobileToolbarStatusSlot"></div>
       <div class="toolbar-left">
         <button type="button" class="btn btn-share" title="Kirim langsung via LocalSend / Share HP" onclick="handleShare()">📤 Share</button>
         <button type="button" class="btn btn-ghost" onclick="jumpToNextEmpty()">🔍 Sel Kosong</button>
         <button type="button" class="btn btn-danger-ghost" onclick="resetFormConfirm()">🗑️ Reset</button>
       </div>
-      <div class="toolbar-right">
+      <div class="toolbar-right" id="desktopToolbarRightSlot">
         <span id="filterMatchInfo" class="filter-info"></span>
+        <span id="filledCountBadge" class="filled-badge">Terisi: 0 / 0 Cell</span>
       </div>
     </div>
 
@@ -1081,7 +1174,7 @@
 
   <!-- Custom Modal Dialog -->
   <div id="appModalOverlay" class="modal-overlay" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div id="appModalCard" class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-header">
         <div id="modalIcon" class="modal-icon info">ℹ️</div>
         <h3 id="modalTitle" class="modal-title">Informasi</h3>
@@ -1091,15 +1184,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=1.4.1"></script>
-  <script>
-    if ('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch((err) => {
-          console.warn('SW registration skipped:', err.message);
-        });
-      });
-    }
-  </script>
+  <script src="app.js?v=1.5.0"></script>
 </body>
 </html>

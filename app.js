@@ -1,3 +1,7 @@
+const APP_VERSION = '1.5.0';
+const VERSION_STORAGE_KEY = 'pmr_editor_installed_version';
+const STORAGE_PREFIX = 'pmr_editor_draft_v1_';
+
 let currentParameters = [];
 let currentOperatorKey = 'operator1';
 let currentValues = {};
@@ -7,8 +11,7 @@ let importedTimingProfile = null;
 let draftPulseTimer = null;
 let activeModalResolver = null;
 let activeModalDismissValue = null;
-
-const STORAGE_PREFIX = 'pmr_editor_draft_v1_';
+let updatePromptShown = false;
 
 const OPERATOR_LABELS = {
   operator1: 'Operator 1 (167 Parameter)',
@@ -25,9 +28,11 @@ const OPERATOR_SHORT_NAMES = {
 document.addEventListener('DOMContentLoaded', () => {
   const defaultOp = document.getElementById('selectOperator').value || 'operator1';
   setupModalEvents();
+  syncResponsiveBadgePlacement();
   updateOnlineStatusUI();
   updateLayoutContainerVisibility();
   loadParameter(defaultOp);
+  initPwaForceUpdate();
 });
 
 window.addEventListener('online', updateOnlineStatusUI);
@@ -40,6 +45,7 @@ function updateOnlineStatusUI() {
 }
 
 window.addEventListener('resize', () => {
+  syncResponsiveBadgePlacement();
   const preferred = window.innerWidth < 768 ? 'vertical' : 'horizontal';
   if (preferred !== currentViewMode) {
     currentViewMode = preferred;
@@ -48,6 +54,111 @@ window.addEventListener('resize', () => {
     filterParameters();
   }
 });
+
+/* ================= RESPONSIVE BADGE RELOCATION ================= */
+
+function syncResponsiveBadgePlacement() {
+  const isMobile = window.innerWidth < 768;
+  const filledBadge = document.getElementById('filledCountBadge');
+  const draftBadge = document.getElementById('draftSavedBadge');
+  const mobileSlot = document.getElementById('mobileToolbarStatusSlot');
+  const desktopHeaderSlot = document.getElementById('headerDraftSlot');
+  const desktopToolbarSlot = document.getElementById('desktopToolbarRightSlot');
+
+  if (!filledBadge || !draftBadge || !mobileSlot || !desktopHeaderSlot || !desktopToolbarSlot) return;
+
+  if (isMobile) {
+    if (filledBadge.parentElement !== mobileSlot) mobileSlot.appendChild(filledBadge);
+    if (draftBadge.parentElement !== mobileSlot) mobileSlot.appendChild(draftBadge);
+  } else {
+    if (draftBadge.parentElement !== desktopHeaderSlot) desktopHeaderSlot.appendChild(draftBadge);
+    if (filledBadge.parentElement !== desktopToolbarSlot) desktopToolbarSlot.appendChild(filledBadge);
+  }
+}
+
+/* ================= PWA FORCE UPDATE & UPDATE POP-UP CARD ================= */
+
+function initPwaForceUpdate() {
+  const prevVersion = localStorage.getItem(VERSION_STORAGE_KEY);
+  if (prevVersion && prevVersion !== APP_VERSION) {
+    showAppUpdateCard(prevVersion, APP_VERSION);
+  } else if (!prevVersion) {
+    localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
+  }
+
+  if (!('serviceWorker' in navigator)) return;
+  if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
+
+  window.addEventListener('load', async () => {
+    try {
+      const reg = await navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' });
+
+      if (reg.waiting) {
+        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        showAppUpdateCard(prevVersion || 'versi lama', APP_VERSION);
+      }
+
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            newWorker.postMessage({ type: 'SKIP_WAITING' });
+            showAppUpdateCard(prevVersion || 'versi lama', APP_VERSION);
+          }
+        });
+      });
+
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        showAppUpdateCard(prevVersion || 'versi lama', APP_VERSION);
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          reg.update().catch(() => {});
+        }
+      });
+
+      reg.update().catch(() => {});
+    } catch (err) {
+      console.warn('SW registration skipped:', err.message);
+    }
+  });
+}
+
+async function showAppUpdateCard(oldVer, newVer) {
+  if (updatePromptShown) return;
+  updatePromptShown = true;
+
+  const choice = await showModal({
+    type: 'success',
+    isUpdateCard: true,
+    title: `Update Tersedia (v${newVer})`,
+    paragraphs: [
+      `Versi baru PMR Editor siap digunakan${oldVer && oldVer !== newVer ? ` (pembaruan dari v${oldVer})` : ''}. Muat ulang sekarang agar tampilan & fitur terbaru langsung aktif.`
+    ],
+    bullets: [
+      'Tombol ✕ pelepas file aktif untuk mulai isian baru dari nol',
+      'Perbaikan pilih & export file .pmr / .json di iPhone & Android',
+      'Tampilan badge status lebih seimbang di HP & PC serta icon anti-crop'
+    ],
+    bulletStyle: 'success',
+    actions: [
+      { label: '🔄 Muat Ulang Sekarang', value: 'reload', className: 'btn btn-primary' },
+      { label: 'Nanti Saja', value: 'later', className: 'btn btn-ghost' }
+    ],
+    dismissValue: 'later'
+  });
+
+  localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
+
+  if (choice === 'reload') {
+    window.location.reload();
+  }
+}
 
 /* ================= CUSTOM MODAL ENGINE ================= */
 
@@ -71,9 +182,13 @@ function setupModalEvents() {
 
 function closeModal(resultValue) {
   const overlay = document.getElementById('appModalOverlay');
+  const card = document.getElementById('appModalCard');
   if (overlay) {
     overlay.classList.remove('open');
     overlay.setAttribute('aria-hidden', 'true');
+  }
+  if (card) {
+    card.classList.remove('update-card');
   }
   const resolver = activeModalResolver;
   activeModalResolver = null;
@@ -83,6 +198,7 @@ function closeModal(resultValue) {
 
 function showModal({
   type = 'info',
+  isUpdateCard = false,
   title = 'Informasi',
   paragraphs = [],
   bullets = [],
@@ -92,6 +208,7 @@ function showModal({
 }) {
   return new Promise((resolve) => {
     const overlay = document.getElementById('appModalOverlay');
+    const card = document.getElementById('appModalCard');
     const iconEl = document.getElementById('modalIcon');
     const titleEl = document.getElementById('modalTitle');
     const bodyEl = document.getElementById('modalBody');
@@ -102,9 +219,13 @@ function showModal({
       return;
     }
 
+    if (card) {
+      card.classList.toggle('update-card', Boolean(isUpdateCard));
+    }
+
     const iconMap = {
       info: 'ℹ️',
-      success: '✅',
+      success: isUpdateCard ? '🚀' : '✅',
       warning: '⚠️',
       danger: '🚨'
     };
@@ -133,7 +254,7 @@ function showModal({
     }
 
     actionsEl.innerHTML = '';
-    actionsEl.className = `modal-actions ${actions.length <= 2 ? 'row-layout' : ''}`;
+    actionsEl.className = `modal-actions ${actions.length <= 2 && !isUpdateCard ? 'row-layout' : ''}`;
 
     let primaryBtn = null;
     actions.forEach((act, idx) => {
@@ -176,17 +297,22 @@ function getLocalTimeShort() {
 
 function setImportedFileBadge(text, isDraft = false) {
   currentBadgeText = text || '';
-  const el = document.getElementById('importedFileInfo');
-  if (!el) return;
+  const container = document.getElementById('importedFileInfo');
+  const iconEl = document.getElementById('importedFileIcon');
+  const prefixEl = document.getElementById('importedFilePrefix');
+  const nameEl = document.getElementById('importedFileName');
+  if (!container || !iconEl || !prefixEl || !nameEl) return;
+
   if (text) {
-    const icon = isDraft ? '💾' : '📄';
-    const prefix = isDraft ? 'Status: ' : 'File aktif: ';
-    el.innerHTML = `${icon} ${prefix}<strong style="color: #e2e8f0;"></strong>`;
-    el.querySelector('strong').textContent = text;
-    el.style.display = 'block';
+    iconEl.textContent = isDraft ? '💾' : '📄';
+    prefixEl.textContent = isDraft ? 'Draft:' : 'File aktif:';
+    nameEl.textContent = text;
+    nameEl.title = text;
+    container.classList.add('visible');
   } else {
-    el.textContent = '';
-    el.style.display = 'none';
+    nameEl.textContent = '';
+    nameEl.title = '';
+    container.classList.remove('visible');
   }
 }
 
@@ -282,7 +408,7 @@ function normalizeCellValue(val, item, strictSanitize = false) {
 function saveDraftToStorage() {
   try {
     const hasData = Object.values(currentValues).some(v => v !== '');
-    if (!hasData && !importedTimingProfile) {
+    if (!hasData && !importedTimingProfile && !currentBadgeText) {
       localStorage.removeItem(STORAGE_PREFIX + currentOperatorKey);
       updateDraftSavedIndicator(false);
       return;
@@ -392,8 +518,11 @@ async function loadParameter(operatorKey) {
     if (superFastEl && typeof draft.superFast === 'boolean') {
       superFastEl.checked = draft.superFast;
     }
-    const labelDraft = draft.badge ? `${draft.badge} (Auto-save)` : 'Draft tersimpan dipulihkan';
-    setImportedFileBadge(labelDraft, true);
+    if (draft.badge) {
+      setImportedFileBadge(draft.badge, true);
+    } else {
+      setImportedFileBadge(null);
+    }
     updateDraftSavedIndicator(true, draft.updatedAt);
   } else {
     setImportedFileBadge(null);
@@ -491,7 +620,6 @@ function createCellControl(item, idx) {
 
     currentValues[item.id] = sanitized;
     input.classList.toggle('cell-empty', sanitized === '');
-    // While typing, allow trailing dot temporarily; flag clearly if invalid mid-string
     const tempValid = sanitized === '' || sanitized === '-' || sanitized === '.' || sanitized === '-.' || /^-?(?:\d+\.?\d*|\.\d+)$/.test(sanitized);
     input.classList.toggle('cell-warning', !tempValid);
     updateFilledStats();
@@ -713,12 +841,50 @@ async function jumpToNextEmpty() {
   });
 }
 
+function clearWorkspaceData() {
+  currentValues = {};
+  importedTimingProfile = null;
+  localStorage.removeItem(STORAGE_PREFIX + currentOperatorKey);
+  setImportedFileBadge(null);
+  updateDraftSavedIndicator(false);
+  const fileInput = document.getElementById('importFileInput');
+  if (fileInput) fileInput.value = '';
+  clearSearch();
+  renderActiveTable();
+  updateFilledStats();
+}
+
+async function unloadActiveFileConfirm() {
+  const fileName = currentBadgeText || 'file aktif';
+  const opName = OPERATOR_SHORT_NAMES[currentOperatorKey] || currentOperatorKey.toUpperCase();
+  const confirmed = await showModal({
+    type: 'warning',
+    title: 'Lepas File & Mulai Kosongan Baru?',
+    paragraphs: [
+      `File "${fileName}" akan dilepas dan seluruh sel pada ${opName} akan dikosongkan agar Anda bisa membuat data baru dari nol.`
+    ],
+    actions: [
+      { label: '🧹 Ya, Kosongkan', value: true, className: 'btn btn-danger-ghost' },
+      { label: 'Batal', value: false, className: 'btn btn-ghost' }
+    ],
+    dismissValue: false
+  });
+
+  if (!confirmed) return;
+  clearWorkspaceData();
+}
+
 async function resetFormConfirm() {
   const opName = OPERATOR_SHORT_NAMES[currentOperatorKey] || currentOperatorKey.toUpperCase();
+  const hasFile = Boolean(currentBadgeText);
+  const desc = hasFile
+    ? `File "${currentBadgeText}" akan dilepas serta semua angka dan draft tersimpan untuk ${opName} akan dikosongkan.`
+    : `Semua angka dan draft tersimpan untuk ${opName} akan dihapus bersih.`;
+
   const confirmed = await showModal({
     type: 'danger',
     title: `Reset Isian ${opName}?`,
-    paragraphs: [`Semua angka dan draft tersimpan untuk ${opName} akan dihapus bersih.`],
+    paragraphs: [desc],
     actions: [
       { label: '🗑️ Ya, Reset', value: true, className: 'btn btn-danger-ghost' },
       { label: 'Batal', value: false, className: 'btn btn-ghost' }
@@ -727,15 +893,7 @@ async function resetFormConfirm() {
   });
 
   if (!confirmed) return;
-
-  currentValues = {};
-  importedTimingProfile = null;
-  localStorage.removeItem(STORAGE_PREFIX + currentOperatorKey);
-  setImportedFileBadge(null);
-  updateDraftSavedIndicator(false);
-  clearSearch();
-  renderActiveTable();
-  updateFilledStats();
+  clearWorkspaceData();
 }
 
 function clearSearch() {
@@ -1244,14 +1402,18 @@ function buildExportArtifact() {
     events: events
   };
 
-  const fileName = format === 'webrunner'
+  const isWebRunner = format === 'webrunner';
+  const fileName = isWebRunner
     ? `WebRunner_${currentOperatorKey}_${dateTag}.json`
     : `Logsheet_${currentOperatorKey}_${dateTag}.pmr`;
+
+  // Use application/octet-stream for .pmr so iOS Safari saves exact .pmr extension without renaming to .pmr.json
+  const mimeType = isWebRunner ? 'application/json' : 'application/octet-stream';
 
   return {
     content: JSON.stringify(macroData, null, 2),
     fileName,
-    mimeType: 'application/json'
+    mimeType
   };
 }
 
@@ -1266,10 +1428,14 @@ async function handleShare() {
   const artifact = buildExportArtifact();
 
   try {
-    const file = new File([artifact.content], artifact.fileName, { type: artifact.mimeType });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    let shareFile = new File([artifact.content], artifact.fileName, { type: artifact.mimeType });
+    if (!(navigator.canShare && navigator.canShare({ files: [shareFile] }))) {
+      shareFile = new File([artifact.content], artifact.fileName, { type: 'text/plain' });
+    }
+
+    if (navigator.canShare && navigator.canShare({ files: [shareFile] })) {
       await navigator.share({
-        files: [file],
+        files: [shareFile],
         title: artifact.fileName,
         text: `Logsheet DILOC ${currentOperatorKey.toUpperCase()}`
       });
@@ -1294,8 +1460,11 @@ function downloadBlob(content, fileName, contentType) {
   const blob = new Blob([content], { type: contentType });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
+  a.style.display = 'none';
   a.href = url;
   a.download = fileName;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
 }

@@ -1,4 +1,5 @@
 {
+  "id": "./",
   "name": "PMR Editor — Logsheet Urea 1B",
   "short_name": "PMR Editor",
   "description": "Editor Macro Logsheet DILOC Pabrik Urea 1B (PyMacroRecord & Web Runner)",
@@ -10,10 +11,34 @@
   "orientation": "any",
   "icons": [
     {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "./icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
