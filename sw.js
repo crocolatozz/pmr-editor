@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pmr-editor-v1.3';
+const CACHE_NAME = 'pmr-editor-v1.4.0';
 const CORE_ASSETS = [
   './',
   './index.html',
