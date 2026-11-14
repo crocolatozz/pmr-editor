@@ -1,0 +1,407 @@
+[
+  {
+    "id": "p1",
+    "index": 1,
+    "equipment": "Level U-FA302",
+    "tag": "LT-302",
+    "unit": "%",
+    "label": "Level U-FA302 (LT-302)",
+    "type": "number"
+  },
+  {
+    "id": "p2",
+    "index": 2,
+    "equipment": "U-GA302",
+    "tag": "U-GA302AM/BM",
+    "unit": "A/B",
+    "label": "U-GA302 (U-GA302AM/BM)",
+    "type": "text"
+  },
+  {
+    "id": "p3",
+    "index": 3,
+    "equipment": "U-GA302",
+    "tag": "PG-304",
+    "unit": "Kg/cm²",
+    "label": "U-GA302 (PG-304)",
+    "type": "number"
+  },
+  {
+    "id": "p4",
+    "index": 4,
+    "equipment": "U-GA302",
+    "tag": "PG-305",
+    "unit": "Kg/cm²",
+    "label": "U-GA302 (PG-305)",
+    "type": "number"
+  },
+  {
+    "id": "p5",
+    "index": 5,
+    "equipment": "Ampere U-GB302",
+    "tag": "06II-132",
+    "unit": "Amp",
+    "label": "Ampere U-GB302 (06II-132)",
+    "type": "number"
+  },
+  {
+    "id": "p6",
+    "index": 6,
+    "equipment": "Damper U-GB302",
+    "tag": "06HIC-981",
+    "unit": "%",
+    "label": "Damper U-GB302 (06HIC-981)",
+    "type": "number"
+  },
+  {
+    "id": "p7",
+    "index": 7,
+    "equipment": "U-GB302",
+    "tag": "PG-310",
+    "unit": "Kg/cm²",
+    "label": "U-GB302 (PG-310)",
+    "type": "number"
+  },
+  {
+    "id": "p8",
+    "index": 8,
+    "equipment": "U-GB302",
+    "tag": "TG-310",
+    "unit": "°C",
+    "label": "U-GB302 (TG-310)",
+    "type": "number"
+  },
+  {
+    "id": "p9",
+    "index": 9,
+    "equipment": "EC301 di U-FD306 U-GB302",
+    "tag": "EC-301",
+    "unit": "%",
+    "label": "EC301 di U-FD306 U-GB302 (EC-301)",
+    "type": "number"
+  },
+  {
+    "id": "p10",
+    "index": 10,
+    "equipment": "Ampere U-GB301 A",
+    "tag": "06II-131A",
+    "unit": "Amp",
+    "label": "Ampere U-GB301 A (06II-131A)",
+    "type": "number"
+  },
+  {
+    "id": "p11",
+    "index": 11,
+    "equipment": "Ampere U-GB301 B",
+    "tag": "06II-131B",
+    "unit": "Amp",
+    "label": "Ampere U-GB301 B (06II-131B)",
+    "type": "number"
+  },
+  {
+    "id": "p12",
+    "index": 12,
+    "equipment": "Ampere U-GB301 C",
+    "tag": "06II-131C",
+    "unit": "Amp",
+    "label": "Ampere U-GB301 C (06II-131C)",
+    "type": "number"
+  },
+  {
+    "id": "p13",
+    "index": 13,
+    "equipment": "Ampere U-GB301 D",
+    "tag": "06II-131D",
+    "unit": "Amp",
+    "label": "Ampere U-GB301 D (06II-131D)",
+    "type": "number"
+  },
+  {
+    "id": "p14",
+    "index": 14,
+    "equipment": "Diff. Vacuum Dust Chamber PRILLING TOWER",
+    "tag": "PDG-301",
+    "unit": "mmH2O",
+    "label": "Diff. Vacuum Dust Chamber PRILLING TOWER (PDG-301)",
+    "type": "number"
+  },
+  {
+    "id": "p15",
+    "index": 15,
+    "equipment": "Vacuum Dust Chamber PRILLING TOWER",
+    "tag": "PG-311",
+    "unit": "mmH2O",
+    "label": "Vacuum Dust Chamber PRILLING TOWER (PG-311)",
+    "type": "number"
+  },
+  {
+    "id": "p16",
+    "index": 16,
+    "equipment": "U-GA301",
+    "tag": "U-GA301AM/BM",
+    "unit": "A/B",
+    "label": "U-GA301 (U-GA301AM/BM)",
+    "type": "text"
+  },
+  {
+    "id": "p17",
+    "index": 17,
+    "equipment": "Ampere U-GA301 A/B",
+    "tag": "06II-301A/B",
+    "unit": "Amp",
+    "label": "Ampere U-GA301 A/B (06II-301A/B)",
+    "type": "number"
+  },
+  {
+    "id": "p18",
+    "index": 18,
+    "equipment": "U-GA301",
+    "tag": "PG-302",
+    "unit": "Kg/cm²",
+    "label": "U-GA301 (PG-302)",
+    "type": "number"
+  },
+  {
+    "id": "p19",
+    "index": 19,
+    "equipment": "U-GA301",
+    "tag": "PG-306",
+    "unit": "Kg/cm²",
+    "label": "U-GA301 (PG-306)",
+    "type": "number"
+  },
+  {
+    "id": "p20",
+    "index": 20,
+    "equipment": "Level Pump Pit U-GA301",
+    "tag": "LI-305A",
+    "unit": "%",
+    "label": "Level Pump Pit U-GA301 (LI-305A)",
+    "type": "number"
+  },
+  {
+    "id": "p21",
+    "index": 21,
+    "equipment": "Level Head Tank U-FA301",
+    "tag": "LI-306",
+    "unit": "%",
+    "label": "Level Head Tank U-FA301 (LI-306)",
+    "type": "number"
+  },
+  {
+    "id": "p22",
+    "index": 22,
+    "equipment": "Temp. U-FA301",
+    "tag": "TG-301",
+    "unit": "°C",
+    "label": "Temp. U-FA301 (TG-301)",
+    "type": "number"
+  },
+  {
+    "id": "p23",
+    "index": 23,
+    "equipment": "U-FA301",
+    "tag": "PG-309",
+    "unit": "Kg/cm²",
+    "label": "U-FA301 (PG-309)",
+    "type": "number"
+  },
+  {
+    "id": "p24",
+    "index": 24,
+    "equipment": "U-FJ301 Online",
+    "tag": "U-FJ301A-I",
+    "unit": "ea",
+    "label": "U-FJ301 Online (U-FJ301A-I)",
+    "type": "number"
+  },
+  {
+    "id": "p25",
+    "index": 25,
+    "equipment": "U-FJ301 Standby",
+    "tag": "U-FJ301 Standby",
+    "unit": "Huruf",
+    "label": "U-FJ301 Standby (U-FJ301 Standby)",
+    "type": "number"
+  },
+  {
+    "id": "p26",
+    "index": 26,
+    "equipment": "U-GA803",
+    "tag": "U-GA803AM/BM",
+    "unit": "A/B",
+    "label": "U-GA803 (U-GA803AM/BM)",
+    "type": "text"
+  },
+  {
+    "id": "p27",
+    "index": 27,
+    "equipment": "Press. Disc. U-GA803",
+    "tag": "PG-761",
+    "unit": "Kg/cm²",
+    "label": "Press. Disc. U-GA803 (PG-761)",
+    "type": "number"
+  },
+  {
+    "id": "p28",
+    "index": 28,
+    "equipment": "Level Anti-Caking U-FA802",
+    "tag": "LG-761",
+    "unit": "%",
+    "label": "Level Anti-Caking U-FA802 (LG-761)",
+    "type": "number"
+  },
+  {
+    "id": "p29",
+    "index": 29,
+    "equipment": "Flow Anti-Caking U-GA803",
+    "tag": "ANTICAKING-FLOW",
+    "unit": "ml/min",
+    "label": "Flow Anti-Caking U-GA803 (ANTICAKING-FLOW)",
+    "type": "number"
+  },
+  {
+    "id": "p30",
+    "index": 30,
+    "equipment": "U-GA801",
+    "tag": "U-GA801AM/BM",
+    "unit": "A/B",
+    "label": "U-GA801 (U-GA801AM/BM)",
+    "type": "text"
+  },
+  {
+    "id": "p31",
+    "index": 31,
+    "equipment": "Press. Disc. U-GA801",
+    "tag": "PG-751",
+    "unit": "Kg/cm²",
+    "label": "Press. Disc. U-GA801 (PG-751)",
+    "type": "number"
+  },
+  {
+    "id": "p32",
+    "index": 32,
+    "equipment": "Level Pewarna U-FA801",
+    "tag": "LG-751",
+    "unit": "%",
+    "label": "Level Pewarna U-FA801 (LG-751)",
+    "type": "number"
+  },
+  {
+    "id": "p33",
+    "index": 33,
+    "equipment": "Flow Pewarna U-GA801",
+    "tag": "COLOR-FLOW",
+    "unit": "ml/min",
+    "label": "Flow Pewarna U-GA801 (COLOR-FLOW)",
+    "type": "number"
+  },
+  {
+    "id": "p34",
+    "index": 34,
+    "equipment": "Level Small U-FA501",
+    "tag": "LG-501",
+    "unit": "%",
+    "label": "Level Small U-FA501 (LG-501)",
+    "type": "number"
+  },
+  {
+    "id": "p35",
+    "index": 35,
+    "equipment": "Level Big U-FA501",
+    "tag": "LG-505",
+    "unit": "%",
+    "label": "Level Big U-FA501 (LG-505)",
+    "type": "number"
+  },
+  {
+    "id": "p36",
+    "index": 36,
+    "equipment": "Ampere U-GA501A/B",
+    "tag": "06II-501A/B",
+    "unit": "Amp",
+    "label": "Ampere U-GA501A/B (06II-501A/B)",
+    "type": "number"
+  },
+  {
+    "id": "p37",
+    "index": 37,
+    "equipment": "Press. Disc. U-GA501A/B",
+    "tag": "PG-504",
+    "unit": "Kg/cm²",
+    "label": "Press. Disc. U-GA501A/B (PG-504)",
+    "type": "number"
+  },
+  {
+    "id": "p38",
+    "index": 38,
+    "equipment": "Ampere U-GA502A/B",
+    "tag": "06II-502A/B",
+    "unit": "Amp",
+    "label": "Ampere U-GA502A/B (06II-502A/B)",
+    "type": "number"
+  },
+  {
+    "id": "p39",
+    "index": 39,
+    "equipment": "Press. Disc. U-GA502A/B",
+    "tag": "PG-508",
+    "unit": "Kg/cm²",
+    "label": "Press. Disc. U-GA502A/B (PG-508)",
+    "type": "number"
+  },
+  {
+    "id": "p40",
+    "index": 40,
+    "equipment": "Ampere U-GA503A/B",
+    "tag": "06II-503A/B",
+    "unit": "Amp",
+    "label": "Ampere U-GA503A/B (06II-503A/B)",
+    "type": "number"
+  },
+  {
+    "id": "p41",
+    "index": 41,
+    "equipment": "Press. Disc. U-GA503A/B",
+    "tag": "PG-509",
+    "unit": "Kg/cm²",
+    "label": "Press. Disc. U-GA503A/B (PG-509)",
+    "type": "number"
+  },
+  {
+    "id": "p42",
+    "index": 42,
+    "equipment": "U-EA504",
+    "tag": "U-EA504A/B",
+    "unit": "A/B",
+    "label": "U-EA504 (U-EA504A/B)",
+    "type": "number"
+  },
+  {
+    "id": "p43",
+    "index": 43,
+    "equipment": "Level U-FA305",
+    "tag": "LG-301",
+    "unit": "%",
+    "label": "Level U-FA305 (LG-301)",
+    "type": "number"
+  },
+  {
+    "id": "p44",
+    "index": 44,
+    "equipment": "Ampere U-GA303A/B",
+    "tag": "06II-303A/B",
+    "unit": "Amp",
+    "label": "Ampere U-GA303A/B (06II-303A/B)",
+    "type": "number"
+  },
+  {
+    "id": "p45",
+    "index": 45,
+    "equipment": "Press. Disc. U-GA303A/B",
+    "tag": "PG-514",
+    "unit": "Kg/cm²",
+    "label": "Press. Disc. U-GA303A/B (PG-514)",
+    "type": "number"
+  }
+]

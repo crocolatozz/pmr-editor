@@ -1,0 +1,461 @@
+[
+  {
+    "id": "p1",
+    "index": 1,
+    "equipment": "U-EA101",
+    "tag": "PG-101",
+    "unit": "Kg/cm²",
+    "label": "U-EA101 (PG-101)",
+    "type": "number"
+  },
+  {
+    "id": "p2",
+    "index": 2,
+    "equipment": "U-EA102",
+    "tag": "TG-117",
+    "unit": "°C",
+    "label": "U-EA102 (TG-117)",
+    "type": "number"
+  },
+  {
+    "id": "p3",
+    "index": 3,
+    "equipment": "U-EA103",
+    "tag": "PG-108",
+    "unit": "Kg/cm²",
+    "label": "U-EA103 (PG-108)",
+    "type": "number"
+  },
+  {
+    "id": "p4",
+    "index": 4,
+    "equipment": "U-FA101",
+    "tag": "PG-107",
+    "unit": "Kg/cm²",
+    "label": "U-FA101 (PG-107)",
+    "type": "number"
+  },
+  {
+    "id": "p5",
+    "index": 5,
+    "equipment": "U-FA101",
+    "tag": "LG-102",
+    "unit": "%",
+    "label": "U-FA101 (LG-102)",
+    "type": "number"
+  },
+  {
+    "id": "p6",
+    "index": 6,
+    "equipment": "U-FA102",
+    "tag": "PG-104",
+    "unit": "Kg/cm²",
+    "label": "U-FA102 (PG-104)",
+    "type": "number"
+  },
+  {
+    "id": "p7",
+    "index": 7,
+    "equipment": "U-FA102",
+    "tag": "LG-101",
+    "unit": "%",
+    "label": "U-FA102 (LG-101)",
+    "type": "number"
+  },
+  {
+    "id": "p8",
+    "index": 8,
+    "equipment": "U-FA102",
+    "tag": "FI-110AA",
+    "unit": "Ton/h",
+    "label": "U-FA102 (FI-110AA)",
+    "type": "number"
+  },
+  {
+    "id": "p9",
+    "index": 9,
+    "equipment": "U-FA102",
+    "tag": "TG-102",
+    "unit": "°C",
+    "label": "U-FA102 (TG-102)",
+    "type": "number"
+  },
+  {
+    "id": "p10",
+    "index": 10,
+    "equipment": "U-FA105",
+    "tag": "PG-117",
+    "unit": "Kg/cm²",
+    "label": "U-FA105 (PG-117)",
+    "type": "number"
+  },
+  {
+    "id": "p11",
+    "index": 11,
+    "equipment": "U-FA105",
+    "tag": "LG-104",
+    "unit": "%",
+    "label": "U-FA105 (LG-104)",
+    "type": "number"
+  },
+  {
+    "id": "p12",
+    "index": 12,
+    "equipment": "U-DA201",
+    "tag": "PG-203",
+    "unit": "Kg/cm²",
+    "label": "U-DA201 (PG-203)",
+    "type": "number"
+  },
+  {
+    "id": "p13",
+    "index": 13,
+    "equipment": "U-DA201",
+    "tag": "FI-201",
+    "unit": "kg/h",
+    "label": "U-DA201 (FI-201)",
+    "type": "number"
+  },
+  {
+    "id": "p14",
+    "index": 14,
+    "equipment": "U-FA206",
+    "tag": "LG-202",
+    "unit": "%",
+    "label": "U-FA206 (LG-202)",
+    "type": "number"
+  },
+  {
+    "id": "p15",
+    "index": 15,
+    "equipment": "U-DA202",
+    "tag": "PG-204",
+    "unit": "Kg/cm²",
+    "label": "U-DA202 (PG-204)",
+    "type": "number"
+  },
+  {
+    "id": "p16",
+    "index": 16,
+    "equipment": "U-FA207",
+    "tag": "LG-201",
+    "unit": "%",
+    "label": "U-FA207 (LG-201)",
+    "type": "number"
+  },
+  {
+    "id": "p17",
+    "index": 17,
+    "equipment": "U-EA201",
+    "tag": "PG-209",
+    "unit": "Kg/cm²",
+    "label": "U-EA201 (PG-209)",
+    "type": "number"
+  },
+  {
+    "id": "p18",
+    "index": 18,
+    "equipment": "U-FA202",
+    "tag": "PG-218",
+    "unit": "mmHg",
+    "label": "U-FA202 (PG-218)",
+    "type": "number"
+  },
+  {
+    "id": "p19",
+    "index": 19,
+    "equipment": "U-FA202",
+    "tag": "FI-209",
+    "unit": "kg/h",
+    "label": "U-FA202 (FI-209)",
+    "type": "number"
+  },
+  {
+    "id": "p20",
+    "index": 20,
+    "equipment": "U-EA202",
+    "tag": "PG-212",
+    "unit": "Kg/cm²",
+    "label": "U-EA202 (PG-212)",
+    "type": "number"
+  },
+  {
+    "id": "p21",
+    "index": 21,
+    "equipment": "U-FA203",
+    "tag": "PG-210",
+    "unit": "mmHg",
+    "label": "U-FA203 (PG-210)",
+    "type": "number"
+  },
+  {
+    "id": "p22",
+    "index": 22,
+    "equipment": "U-FA203",
+    "tag": "FI-206",
+    "unit": "kg/h",
+    "label": "U-FA203 (FI-206)",
+    "type": "number"
+  },
+  {
+    "id": "p23",
+    "index": 23,
+    "equipment": "U-FA203",
+    "tag": "SG-FA203",
+    "unit": "%",
+    "label": "U-FA203 (SG-FA203)",
+    "type": "number"
+  },
+  {
+    "id": "p24",
+    "index": 24,
+    "equipment": "U-EE201",
+    "tag": "PG-211",
+    "unit": "Kg/cm²",
+    "label": "U-EE201 (PG-211)",
+    "type": "number"
+  },
+  {
+    "id": "p25",
+    "index": 25,
+    "equipment": "U-GA204",
+    "tag": "U-GA204AM/BM",
+    "unit": "A/B",
+    "label": "U-GA204 (U-GA204AM/BM)",
+    "type": "text"
+  },
+  {
+    "id": "p26",
+    "index": 26,
+    "equipment": "U-GA204",
+    "tag": "06II-204A/B",
+    "unit": "Amp",
+    "label": "U-GA204 (06II-204A/B)",
+    "type": "number"
+  },
+  {
+    "id": "p27",
+    "index": 27,
+    "equipment": "U-GA204",
+    "tag": "PG-213",
+    "unit": "Kg/cm²",
+    "label": "U-GA204 (PG-213)",
+    "type": "number"
+  },
+  {
+    "id": "p28",
+    "index": 28,
+    "equipment": "U-EA401",
+    "tag": "PG-202",
+    "unit": "Kg/cm²",
+    "label": "U-EA401 (PG-202)",
+    "type": "number"
+  },
+  {
+    "id": "p29",
+    "index": 29,
+    "equipment": "U-EA401",
+    "tag": "PG-406",
+    "unit": "Kg/cm²",
+    "label": "U-EA401 (PG-406)",
+    "type": "number"
+  },
+  {
+    "id": "p30",
+    "index": 30,
+    "equipment": "Sight Glass U-EA401",
+    "tag": "SG-EA401",
+    "unit": "%",
+    "label": "Sight Glass U-EA401 (SG-EA401)",
+    "type": "number"
+  },
+  {
+    "id": "p31",
+    "index": 31,
+    "equipment": "Sight Glass U-DA401",
+    "tag": "SG-DA401",
+    "unit": "%",
+    "label": "Sight Glass U-DA401 (SG-DA401)",
+    "type": "number"
+  },
+  {
+    "id": "p32",
+    "index": 32,
+    "equipment": "FI-402 for U-EA402",
+    "tag": "FI-402",
+    "unit": "kg/h",
+    "label": "FI-402 for U-EA402 (FI-402)",
+    "type": "number"
+  },
+  {
+    "id": "p33",
+    "index": 33,
+    "equipment": "Sight Glass U-EA402",
+    "tag": "SG-EA402",
+    "unit": "%",
+    "label": "Sight Glass U-EA402 (SG-EA402)",
+    "type": "number"
+  },
+  {
+    "id": "p34",
+    "index": 34,
+    "equipment": "Press. U-FA402",
+    "tag": "PG-408",
+    "unit": "Kg/cm²",
+    "label": "Press. U-FA402 (PG-408)",
+    "type": "number"
+  },
+  {
+    "id": "p35",
+    "index": 35,
+    "equipment": "Level Glass U-FA402",
+    "tag": "LG-401",
+    "unit": "%",
+    "label": "Level Glass U-FA402 (LG-401)",
+    "type": "number"
+  },
+  {
+    "id": "p36",
+    "index": 36,
+    "equipment": "U-EA403",
+    "tag": "U-EA403A/B",
+    "unit": "A/B",
+    "label": "U-EA403 (U-EA403A/B)",
+    "type": "number"
+  },
+  {
+    "id": "p37",
+    "index": 37,
+    "equipment": "U-EA403",
+    "tag": "TG-403",
+    "unit": "°C",
+    "label": "U-EA403 (TG-403)",
+    "type": "number"
+  },
+  {
+    "id": "p38",
+    "index": 38,
+    "equipment": "U-EA403",
+    "tag": "TG-407",
+    "unit": "°C",
+    "label": "U-EA403 (TG-407)",
+    "type": "number"
+  },
+  {
+    "id": "p39",
+    "index": 39,
+    "equipment": "U-EA501",
+    "tag": "PG-501",
+    "unit": "mmHg",
+    "label": "U-EA501 (PG-501)",
+    "type": "number"
+  },
+  {
+    "id": "p40",
+    "index": 40,
+    "equipment": "U-EA501",
+    "tag": "TG-501",
+    "unit": "°C",
+    "label": "U-EA501 (TG-501)",
+    "type": "number"
+  },
+  {
+    "id": "p41",
+    "index": 41,
+    "equipment": "U-EA503",
+    "tag": "PG-503",
+    "unit": "mmHg",
+    "label": "U-EA503 (PG-503)",
+    "type": "number"
+  },
+  {
+    "id": "p42",
+    "index": 42,
+    "equipment": "U-EA503",
+    "tag": "TG-503",
+    "unit": "°C",
+    "label": "U-EA503 (TG-503)",
+    "type": "number"
+  },
+  {
+    "id": "p43",
+    "index": 43,
+    "equipment": "U-EA502",
+    "tag": "PG-502",
+    "unit": "mmHg",
+    "label": "U-EA502 (PG-502)",
+    "type": "number"
+  },
+  {
+    "id": "p44",
+    "index": 44,
+    "equipment": "U-EA502",
+    "tag": "TG-502",
+    "unit": "°C",
+    "label": "U-EA502 (TG-502)",
+    "type": "number"
+  },
+  {
+    "id": "p45",
+    "index": 45,
+    "equipment": "U-EA506",
+    "tag": "PG-512",
+    "unit": "mmHg",
+    "label": "U-EA506 (PG-512)",
+    "type": "number"
+  },
+  {
+    "id": "p46",
+    "index": 46,
+    "equipment": "U-EA506",
+    "tag": "TG-512",
+    "unit": "°C",
+    "label": "U-EA506 (TG-512)",
+    "type": "number"
+  },
+  {
+    "id": "p47",
+    "index": 47,
+    "equipment": "U-EE501",
+    "tag": "PG-214",
+    "unit": "Kg/cm²",
+    "label": "U-EE501 (PG-214)",
+    "type": "number"
+  },
+  {
+    "id": "p48",
+    "index": 48,
+    "equipment": "U-EE502",
+    "tag": "PG-215",
+    "unit": "Kg/cm²",
+    "label": "U-EE502 (PG-215)",
+    "type": "number"
+  },
+  {
+    "id": "p49",
+    "index": 49,
+    "equipment": "NITROGEN",
+    "tag": "FI-742",
+    "unit": "kg/h",
+    "label": "NITROGEN (FI-742)",
+    "type": "number"
+  },
+  {
+    "id": "p50",
+    "index": 50,
+    "equipment": "NITROGEN",
+    "tag": "FI-743",
+    "unit": "kg/h",
+    "label": "NITROGEN (FI-743)",
+    "type": "number"
+  },
+  {
+    "id": "p51",
+    "index": 51,
+    "equipment": "NITROGEN",
+    "tag": "FI-746",
+    "unit": "kg/h",
+    "label": "NITROGEN (FI-746)",
+    "type": "number"
+  }
+]
