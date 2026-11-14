@@ -862,39 +862,66 @@
       }
 
       .controls-bar {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        align-items: end;
         padding: 12px;
         gap: 10px;
       }
 
       .control-group {
-        min-width: calc(50% - 6px);
+        min-width: 0;
       }
 
-      .control-group.search-group {
-        min-width: 100%;
+      .operator-group {
+        grid-column: span 6;
+        order: 1;
+      }
+
+      .speed-group {
+        grid-column: span 6;
+        order: 2;
       }
 
       .checkbox-box {
-        font-size: 0.82rem;
-        padding: 0 9px;
-        gap: 7px;
+        font-size: 0.85rem;
+        padding: 0 10px;
+        gap: 8px;
       }
 
-      .action-buttons {
+      .import-group {
+        grid-column: span 4;
+        order: 3;
         width: 100%;
       }
 
-      .file-input-wrapper, .file-input-wrapper .btn {
-        flex: 1;
+      .import-group .btn {
+        width: 100%;
+        padding: 0 8px;
       }
 
-      .export-wrapper {
-        flex: 2;
+      .search-group {
+        grid-column: span 8;
+        order: 4;
       }
 
-      .export-wrapper select {
-        flex: 1;
+      .export-group {
+        grid-column: span 12;
+        order: 5;
+        display: grid;
+        grid-template-columns: 65% 35%;
+        width: 100%;
+      }
+
+      .export-group select {
+        width: 100%;
         min-width: 0;
+        padding: 0 10px;
+      }
+
+      .export-group .btn-primary {
+        width: 100%;
+        padding: 0 10px;
       }
 
       .quick-toolbar {
@@ -904,6 +931,30 @@
         margin-right: -10px;
         border-left: none;
         border-right: none;
+      }
+
+      .toolbar-left {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        width: 100%;
+        gap: 6px;
+      }
+
+      .toolbar-left .btn {
+        width: 100%;
+        padding: 0 6px;
+        font-size: 0.81rem;
+      }
+
+      .toolbar-right {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .toolbar-right:empty,
+      .toolbar-right:has(.filter-info[style*="display: none"]),
+      .toolbar-right:has(.filter-info:not([style*="display: inline"])) {
+        display: none;
       }
 
       .vertical-table thead th.col-val {
@@ -927,7 +978,7 @@
       <div>
         <h1>
           📝 PMR Editor
-          <span class="version-badge">v1.4.0</span>
+          <span class="version-badge">v1.4.1</span>
           <span id="offlineBadge" class="offline-pill">📡 Offline Mode</span>
         </h1>
         <p class="subtitle-text">Editor Macro Logsheet DILOC Pabrik Urea 1B</p>
@@ -942,7 +993,7 @@
     </header>
 
     <div class="controls-bar">
-      <div class="control-group">
+      <div class="control-group operator-group">
         <label class="field-label" for="selectOperator">Pilih Operator</label>
         <select id="selectOperator" onchange="loadParameter(this.value)">
           <option value="operator1" selected>Operator 1 (167)</option>
@@ -951,11 +1002,11 @@
         </select>
       </div>
 
-      <div class="control-group">
+      <div class="control-group speed-group">
         <label class="field-label" for="superFastMode">Kecepatan Pengisian</label>
         <label class="checkbox-box" for="superFastMode" title="Centang untuk pengisian super cepat, atau hilangkan centang untuk mengikuti kecepatan bawaan file">
           <input type="checkbox" id="superFastMode" checked onchange="saveDraftToStorage()">
-          <span>⚡ Mode Super Cepat</span>
+          <span>⚡ Mode Satset</span>
         </label>
       </div>
 
@@ -967,19 +1018,17 @@
         </div>
       </div>
 
-      <div class="action-buttons">
-        <div class="file-input-wrapper">
-          <button type="button" class="btn btn-secondary">📂 Import</button>
-          <input type="file" id="importFileInput" accept=".pmr,.json" onchange="importData(event)">
-        </div>
+      <div class="file-input-wrapper import-group">
+        <button type="button" class="btn btn-secondary">📂 Import</button>
+        <input type="file" id="importFileInput" accept=".pmr,.json" onchange="importData(event)">
+      </div>
 
-        <div class="export-wrapper">
-          <select id="exportFormat" title="Pilih format file export">
-            <option value="pmr" selected>⚡ Macro PMR (.pmr)</option>
-            <option value="webrunner">🌐 Web Runner (.json)</option>
-          </select>
-          <button type="button" class="btn btn-primary" onclick="handleExport()">💾 Export</button>
-        </div>
+      <div class="export-wrapper export-group">
+        <select id="exportFormat" title="Pilih format file export">
+          <option value="pmr" selected>⚡ Macro PMR (.pmr)</option>
+          <option value="webrunner">🌐 Web Runner (.json)</option>
+        </select>
+        <button type="button" class="btn btn-primary" onclick="handleExport()">💾 Export</button>
       </div>
     </div>
 
@@ -1042,7 +1091,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=1.4.0"></script>
+  <script src="app.js?v=1.4.1"></script>
   <script>
     if ('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
       window.addEventListener('load', () => {
