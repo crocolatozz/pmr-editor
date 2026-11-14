@@ -2378,15 +2378,15 @@ let currentParameters = [];
 let currentOperatorKey = 'operator1';
 let currentValues = {};
 let currentViewMode = window.innerWidth < 768 ? 'vertical' : 'horizontal';
-let userOverrodeViewMode = false;
 let currentBadgeText = '';
+let importedTimingProfile = null;
 
 const STORAGE_PREFIX = 'pmr_editor_draft_v1_';
 
 document.addEventListener('DOMContentLoaded', () => {
   const defaultOp = document.getElementById('selectOperator').value || 'operator1';
   updateOnlineStatusUI();
-  updateViewToggleUI();
+  updateLayoutContainerVisibility();
   loadParameter(defaultOp);
 });
 
@@ -2400,11 +2400,10 @@ function updateOnlineStatusUI() {
 }
 
 window.addEventListener('resize', () => {
-  if (userOverrodeViewMode) return;
   const preferred = window.innerWidth < 768 ? 'vertical' : 'horizontal';
   if (preferred !== currentViewMode) {
     currentViewMode = preferred;
-    updateViewToggleUI();
+    updateLayoutContainerVisibility();
     renderActiveTable();
     filterParameters();
   }
@@ -2469,13 +2468,16 @@ function normalizeCellValue(val, item) {
 function saveDraftToStorage() {
   try {
     const hasData = Object.values(currentValues).some(v => v !== '');
-    if (!hasData) {
+    if (!hasData && !importedTimingProfile) {
       localStorage.removeItem(STORAGE_PREFIX + currentOperatorKey);
       return;
     }
+    const superFastEl = document.getElementById('superFastMode');
     const payload = {
       values: currentValues,
       badge: currentBadgeText,
+      timingProfile: importedTimingProfile,
+      superFast: superFastEl ? superFastEl.checked : true,
       updatedAt: Date.now()
     };
     localStorage.setItem(STORAGE_PREFIX + currentOperatorKey, JSON.stringify(payload));
@@ -2519,42 +2521,23 @@ function updateFilledStats() {
   }
 }
 
-function updateViewToggleUI() {
-  const btn = document.getElementById('toggleViewBtn');
+function updateLayoutContainerVisibility() {
   const hCont = document.getElementById('excelScrollContainer');
   const vCont = document.getElementById('verticalScrollContainer');
 
   if (currentViewMode === 'vertical') {
-    if (btn) btn.textContent = '📱 Mode: Vertikal';
     if (hCont) hCont.style.display = 'none';
     if (vCont) vCont.style.display = 'block';
   } else {
-    if (btn) btn.textContent = '💻 Mode: Horizontal';
     if (hCont) hCont.style.display = 'block';
     if (vCont) vCont.style.display = 'none';
   }
 }
 
-function toggleViewMode() {
-  userOverrodeViewMode = true;
-  currentViewMode = currentViewMode === 'vertical' ? 'horizontal' : 'vertical';
-  updateViewToggleUI();
-  renderActiveTable();
-  filterParameters();
-}
-
 async function loadParameter(operatorKey) {
-  const statusInfo = document.getElementById('statusInfo');
-  const badge = document.getElementById('totalCellBadge');
-
-  if (!operatorKey) {
-    if (statusInfo) statusInfo.textContent = 'Belum ada operator dipilih';
-    if (badge) badge.textContent = '0 Cell';
-    return;
-  }
+  if (!operatorKey) return;
 
   currentOperatorKey = operatorKey;
-  if (statusInfo) statusInfo.textContent = `Memuat data (${operatorKey})...`;
 
   try {
     const response = await fetch(`./data/${operatorKey}.json`);
@@ -2568,6 +2551,7 @@ async function loadParameter(operatorKey) {
   }
 
   currentValues = {};
+  importedTimingProfile = null;
 
   // Pulihkan draft localStorage jika tersedia
   const draft = loadDraftFromStorage(operatorKey);
@@ -2577,19 +2561,20 @@ async function loadParameter(operatorKey) {
         currentValues[p.id] = normalizeCellValue(draft.values[p.id], p);
       }
     });
+    if (draft.timingProfile) {
+      importedTimingProfile = draft.timingProfile;
+    }
+    const superFastEl = document.getElementById('superFastMode');
+    if (superFastEl && typeof draft.superFast === 'boolean') {
+      superFastEl.checked = draft.superFast;
+    }
     const labelDraft = draft.badge ? `${draft.badge} (Auto-save)` : 'Draft tersimpan dipulihkan';
     setImportedFileBadge(labelDraft, true);
   } else {
     setImportedFileBadge(null);
   }
 
-  const labelOp = operatorKey === 'operator1'
-    ? 'Operator 1 (167 Parameter)'
-    : (operatorKey === 'operator2' ? 'Operator 2 (51 Parameter)' : 'Operator 3 (45 Parameter)');
-  if (statusInfo) statusInfo.textContent = `Aktif: ${labelOp}`;
-  if (badge) badge.textContent = `${currentParameters.length} Cell Fix`;
-
-  updateViewToggleUI();
+  updateLayoutContainerVisibility();
   renderActiveTable();
   updateFilledStats();
   filterParameters();
@@ -2618,7 +2603,6 @@ function createCellControl(item, idx) {
       select.appendChild(opt);
     });
 
-    // Jika file import lama punya nilai tidak standar (misal "ooff"), tampilkan dengan tanda peringatan
     if (currentVal !== '' && !choiceOpts.includes(currentVal)) {
       const customOpt = document.createElement('option');
       customOpt.value = currentVal;
@@ -2785,11 +2769,6 @@ function renderVerticalTable(params) {
     tr.setAttribute('data-index', idx);
     tr.setAttribute('data-search', `${item.index} ${item.equipment} ${item.tag} ${item.label}`.toLowerCase());
 
-    const tdNo = document.createElement('td');
-    tdNo.className = 'cell-no cell-tap-target';
-    tdNo.textContent = `#${item.index}`;
-    tdNo.addEventListener('click', () => focusInput(idx));
-
     const tdMeta = document.createElement('td');
     tdMeta.className = 'cell-tap-target';
     tdMeta.addEventListener('click', () => focusInput(idx));
@@ -2804,6 +2783,10 @@ function renderVerticalTable(params) {
     const subDiv = document.createElement('div');
     subDiv.className = 'param-sub';
 
+    const numSpan = document.createElement('span');
+    numSpan.className = 'param-num-badge';
+    numSpan.textContent = `#${item.index} •`;
+
     const tagSpan = document.createElement('span');
     tagSpan.className = 'param-tag';
     tagSpan.textContent = item.tag || '-';
@@ -2812,6 +2795,7 @@ function renderVerticalTable(params) {
     unitSpan.className = 'param-unit-pill';
     unitSpan.textContent = item.unit || '-';
 
+    subDiv.appendChild(numSpan);
     subDiv.appendChild(tagSpan);
     subDiv.appendChild(unitSpan);
     metaDiv.appendChild(eqDiv);
@@ -2822,7 +2806,6 @@ function renderVerticalTable(params) {
     const control = createCellControl(item, idx);
     tdVal.appendChild(control);
 
-    tr.appendChild(tdNo);
     tr.appendChild(tdMeta);
     tr.appendChild(tdVal);
     tbody.appendChild(tr);
@@ -2884,6 +2867,7 @@ function jumpToNextEmpty() {
 function resetFormConfirm() {
   if (!confirm(`Reset semua isian untuk ${currentOperatorKey.toUpperCase()}?`)) return;
   currentValues = {};
+  importedTimingProfile = null;
   localStorage.removeItem(STORAGE_PREFIX + currentOperatorKey);
   setImportedFileBadge(null);
   clearSearch();
@@ -2964,6 +2948,42 @@ function filterParameters() {
   }
 }
 
+function getMedian(arr, fallback) {
+  const valid = arr.filter(n => typeof n === 'number' && !isNaN(n) && n > 0 && n < 2).sort((a, b) => a - b);
+  if (valid.length === 0) return fallback;
+  const mid = Math.floor(valid.length / 2);
+  const med = valid.length % 2 !== 0 ? valid[mid] : (valid[mid - 1] + valid[mid]) / 2;
+  return Math.round(med * 10000) / 10000;
+}
+
+function extractTimingProfile(events, settings = null) {
+  const nextColKeys = ['Key.right', 'Key.tab', 'Key.enter', 'Key.return'];
+  const charDelays = [];
+  const navDelays = [];
+  const pressDurations = [];
+
+  events.forEach((ev, idx) => {
+    if (ev.type === 'keyboardEvent' && typeof ev.timestamp === 'number') {
+      if (ev.pressed === false) {
+        pressDurations.push(ev.timestamp);
+      } else if (ev.pressed === true) {
+        if (nextColKeys.includes(ev.key)) {
+          navDelays.push(ev.timestamp);
+        } else if (idx > 0) {
+          charDelays.push(ev.timestamp);
+        }
+      }
+    }
+  });
+
+  return {
+    charDelay: getMedian(charDelays, 0.03),
+    navDelay: getMedian(navDelays, 0.03),
+    pressDuration: getMedian(pressDurations, 0.015),
+    settings: settings || null
+  };
+}
+
 function importData(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -2975,8 +2995,10 @@ function importData(event) {
       const json = JSON.parse(content);
       let populatedCount = 0;
 
+      // Tetap dukung import file Backup JSON lama jika dibutuhkan
       if (json.data) {
         currentValues = {};
+        importedTimingProfile = null;
         currentParameters.forEach(p => {
           if (json.data[p.id] !== undefined) {
             const raw = json.data[p.id].value !== undefined ? json.data[p.id].value : json.data[p.id];
@@ -2990,12 +3012,13 @@ function importData(event) {
         updateFilledStats();
         saveDraftToStorage();
         filterParameters();
-        alert(`✅ Sukses memuat ${populatedCount} data dari file JSON Logsheet!`);
+        alert(`✅ Sukses memuat ${populatedCount} data dari file JSON!`);
         return;
       }
 
       if (json.events && Array.isArray(json.events)) {
         const extractedValues = parsePmrMacroEventsAccurate(json.events);
+        const timingProfile = extractTimingProfile(json.events, json.settings || null);
         const total = extractedValues.length;
 
         // Auto-detect operator berdasarkan jumlah cell (OP1: 167, OP2: 51, OP3: 45)
@@ -3015,17 +3038,18 @@ function importData(event) {
           if (confirm(`⚠️ File PMR ini berisi ${total} cell (cocok dengan ${labelOp}). Pindah ke ${labelOp} otomatis?`)) {
             document.getElementById('selectOperator').value = detectedOp;
             await loadParameter(detectedOp);
-            fillExtractedValues(extractedValues, file.name);
+            fillExtractedValues(extractedValues, file.name, timingProfile);
             return;
           }
         }
 
-        fillExtractedValues(extractedValues, file.name);
+        fillExtractedValues(extractedValues, file.name, timingProfile);
         return;
       }
 
       if (Array.isArray(json)) {
         currentValues = {};
+        importedTimingProfile = null;
         json.forEach((val, idx) => {
           if (idx < currentParameters.length) {
             const paramObj = currentParameters[idx];
@@ -3054,8 +3078,9 @@ function importData(event) {
   reader.readAsText(file);
 }
 
-function fillExtractedValues(extractedValues, fileName) {
+function fillExtractedValues(extractedValues, fileName, timingProfile = null) {
   currentValues = {};
+  importedTimingProfile = timingProfile;
   let populatedCount = 0;
 
   extractedValues.forEach((val, idx) => {
@@ -3072,7 +3097,7 @@ function fillExtractedValues(extractedValues, fileName) {
   updateFilledStats();
   saveDraftToStorage();
   filterParameters();
-  alert(`✅ Sukses membaca file PMR Macro! Terbaca ${extractedValues.length} cell (${populatedCount} cell terisi).`);
+  alert(`✅ Sukses membaca file! Terbaca ${extractedValues.length} cell (${populatedCount} cell terisi).`);
 }
 
 function parsePmrMacroEventsAccurate(events) {
@@ -3134,7 +3159,7 @@ function parsePmrMacroEventsAccurate(events) {
         } else if (key.startsWith('Key.') || (key.startsWith('<') && key.endsWith('>'))) {
           return;
         } else {
-          let cleanKey = key.replace(/'/g, "");
+          let cleanKey = key.split("'").join("");
           if (cleanKey.length === 1) {
             ch = cleanKey;
           }
@@ -3191,10 +3216,7 @@ function validateBeforeExport() {
     const previewWarn = warningParams.slice(0, 5).join(', ');
     const moreWarn = warningParams.length > 5 ? ` (+${warningParams.length - 5} lainnya)` : '';
     const okWarn = confirm(
-      `⚠️ Ditemukan ${warningParams.length} nilai tidak standar:
-${previewWarn}${moreWarn}
-
-Tekan OK untuk tetap lanjut, atau Cancel untuk memperbaiki.`
+      `⚠️ Ditemukan ${warningParams.length} nilai tidak standar:\n${previewWarn}${moreWarn}\n\nTekan OK untuk tetap lanjut, atau Cancel untuk memperbaiki.`
     );
     if (!okWarn) return false;
   }
@@ -3204,11 +3226,7 @@ Tekan OK untuk tetap lanjut, atau Cancel untuk memperbaiki.`
     const previewGaps = gapsBeforeLast.slice(0, 5).map(e => `#${e.item.index} ${e.item.tag}`).join(', ');
     const moreGaps = gapsBeforeLast.length > 5 ? ` (+${gapsBeforeLast.length - 5} lainnya)` : '';
     const okGap = confirm(
-      `🚨 PERINGATAN: Ada ${gapsBeforeLast.length} sel kosong di TENGAH urutan (${previewGaps}${moreGaps})!
-
-Sel kosong tetap mengirim Key.right dan berisiko menggeser urutan kolom di DILOC jika terlewat.
-
-Tekan OK untuk tetap export/share, atau Cancel untuk cek sel kosong.`
+      `🚨 PERINGATAN: Ada ${gapsBeforeLast.length} sel kosong di TENGAH urutan (${previewGaps}${moreGaps})!\n\nSel kosong tetap mengirim Key.right dan berisiko menggeser urutan kolom di DILOC jika terlewat.\n\nTekan OK untuk tetap export/share, atau Cancel untuk cek sel kosong.`
     );
     if (!okGap) {
       jumpToNextEmpty();
@@ -3217,9 +3235,7 @@ Tekan OK untuk tetap export/share, atau Cancel untuk cek sel kosong.`
   } else if (emptyParams.length > 0) {
     const firstEmpty = emptyParams[0].item;
     const okIncomplete = confirm(
-      `⚠️ Baru terisi ${filledCount} dari ${total} cell (${emptyParams.length} sel terakhir masih kosong, mulai #${firstEmpty.index} ${firstEmpty.tag}).
-
-Tekan OK untuk tetap export/share, atau Cancel untuk lanjut mengisi.`
+      `⚠️ Baru terisi ${filledCount} dari ${total} cell (${emptyParams.length} sel terakhir masih kosong, mulai #${firstEmpty.index} ${firstEmpty.tag}).\n\nTekan OK untuk tetap export/share, atau Cancel untuk lanjut mengisi.`
     );
     if (!okIncomplete) {
       jumpToNextEmpty();
@@ -3230,41 +3246,39 @@ Tekan OK untuk tetap export/share, atau Cancel untuk lanjut mengisi.`
   return true;
 }
 
+function getActivePlaybackTiming() {
+  const superFastEl = document.getElementById('superFastMode');
+  const isSuperFast = superFastEl ? superFastEl.checked : true;
+
+  if (isSuperFast) {
+    return {
+      charDelay: 0.005,
+      navDelay: 0.005,
+      pressDuration: 0.002
+    };
+  }
+
+  if (importedTimingProfile) {
+    return {
+      charDelay: importedTimingProfile.charDelay,
+      navDelay: importedTimingProfile.navDelay,
+      pressDuration: importedTimingProfile.pressDuration
+    };
+  }
+
+  // Fallback kecepatan normal jika input manual dari nol tanpa import file
+  return {
+    charDelay: 0.03,
+    navDelay: 0.03,
+    pressDuration: 0.015
+  };
+}
+
 function buildExportArtifact() {
   const formatSelect = document.getElementById('exportFormat');
   const format = formatSelect ? formatSelect.value : 'pmr';
   const dateTag = getLocalDateTag();
-
-  if (format === 'json') {
-    const result = {
-      version: '1.2',
-      operator: currentOperatorKey,
-      timestamp: getLocalIsoTimestamp(),
-      total_cells: currentParameters.length,
-      data: {}
-    };
-
-    currentParameters.forEach(p => {
-      const val = normalizeCellValue(currentValues[p.id] ?? '', p);
-      result.data[p.id] = {
-        index: p.index,
-        equipment: p.equipment,
-        tag: p.tag,
-        unit: p.unit,
-        value: val
-      };
-    });
-
-    return {
-      content: JSON.stringify(result, null, 2),
-      fileName: `Backup_${currentOperatorKey}_${dateTag}.json`,
-      mimeType: 'application/json'
-    };
-  }
-
-  const speedSelect = document.getElementById('macroSpeed');
-  const charDelay = parseFloat(speedSelect ? speedSelect.value : "0.005");
-  const pressDuration = 0.002;
+  const timing = getActivePlaybackTiming();
 
   let lastFilledIdx = -1;
   currentParameters.forEach((p, idx) => {
@@ -3279,22 +3293,28 @@ function buildExportArtifact() {
     const val = normalizeCellValue(currentValues[p.id] ?? '', p);
 
     for (let char of val) {
-      events.push({ type: "keyboardEvent", key: char, pressed: true, timestamp: charDelay });
-      events.push({ type: "keyboardEvent", key: char, pressed: false, timestamp: pressDuration });
+      events.push({ type: "keyboardEvent", key: char, pressed: true, timestamp: timing.charDelay });
+      events.push({ type: "keyboardEvent", key: char, pressed: false, timestamp: timing.pressDuration });
     }
 
     if (idx < lastFilledIdx) {
-      events.push({ type: "keyboardEvent", key: "Key.right", pressed: true, timestamp: charDelay });
-      events.push({ type: "keyboardEvent", key: "Key.right", pressed: false, timestamp: pressDuration });
+      events.push({ type: "keyboardEvent", key: "Key.right", pressed: true, timestamp: timing.navDelay });
+      events.push({ type: "keyboardEvent", key: "Key.right", pressed: false, timestamp: timing.pressDuration });
     }
   }
 
+  const superFastEl = document.getElementById('superFastMode');
+  const isSuperFast = superFastEl ? superFastEl.checked : true;
+  const baseSettings = (!isSuperFast && importedTimingProfile && importedTimingProfile.settings)
+    ? importedTimingProfile.settings
+    : {
+        Playback: { Speed: 1.0, Repeat: { Times: 1, For: 0, Interval: 0, Delay: 0, Scheduled: 0, Infinite: false } },
+        Minimization: { When_Playing: false, When_Recording: false },
+        After_Playback: { Mode: "Idle" }
+      };
+
   const macroData = {
-    settings: {
-      Playback: { Speed: 1.0, Repeat: { Times: 1, For: 0, Interval: 0, Delay: 0, Scheduled: 0, Infinite: false } },
-      Minimization: { When_Playing: false, When_Recording: false },
-      After_Playback: { Mode: "Idle" }
-    },
+    settings: baseSettings,
     events: events
   };
 
