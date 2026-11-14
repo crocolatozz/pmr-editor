@@ -1,4 +1,4 @@
-const APP_VERSION = '1.5.0';
+const APP_VERSION = '1.6.0';
 const VERSION_STORAGE_KEY = 'pmr_editor_installed_version';
 const STORAGE_PREFIX = 'pmr_editor_draft_v1_';
 
@@ -27,6 +27,7 @@ const OPERATOR_SHORT_NAMES = {
 
 document.addEventListener('DOMContentLoaded', () => {
   const defaultOp = document.getElementById('selectOperator').value || 'operator1';
+  setupNativeTouchGuards();
   setupModalEvents();
   syncResponsiveBadgePlacement();
   updateOnlineStatusUI();
@@ -34,6 +35,35 @@ document.addEventListener('DOMContentLoaded', () => {
   loadParameter(defaultOp);
   initPwaForceUpdate();
 });
+
+function triggerHaptic(duration = 12) {
+  try {
+    if (navigator && typeof navigator.vibrate === 'function') {
+      navigator.vibrate(duration);
+    }
+  } catch (_) {}
+}
+
+function setupNativeTouchGuards() {
+  // Block iOS Safari pinch-to-zoom gestures
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach((evtName) => {
+    document.addEventListener(evtName, (e) => {
+      e.preventDefault();
+    }, { passive: false });
+  });
+
+  // Prevent accidental double-tap zoom on UI buttons/headers while keeping inputs & scrolling smooth
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', (e) => {
+    const tag = e.target && e.target.tagName ? e.target.tagName.toUpperCase() : '';
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+    const now = Date.now();
+    if (now - lastTouchEnd <= 280) {
+      e.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, { passive: false });
+}
 
 window.addEventListener('online', updateOnlineStatusUI);
 window.addEventListener('offline', updateOnlineStatusUI);
@@ -141,9 +171,9 @@ async function showAppUpdateCard(oldVer, newVer) {
       `Versi baru PMR Editor siap digunakan${oldVer && oldVer !== newVer ? ` (pembaruan dari v${oldVer})` : ''}. Muat ulang sekarang agar tampilan & fitur terbaru langsung aktif.`
     ],
     bullets: [
-      'Tombol ✕ pelepas file aktif untuk mulai isian baru dari nol',
-      'Perbaikan pilih & export file .pmr / .json di iPhone & Android',
-      'Tampilan badge status lebih seimbang di HP & PC serta icon anti-crop'
+      'Posisi badge Terisi (kiri) & Draft tersimpan (kanan) lebih rapi di HP',
+      'Tampilan rasa aplikasi native: anti-zoom, anti-select text & safe-area iPhone',
+      'Tombol Next langsung di keyboard HP & haptic feedback halus'
     ],
     bulletStyle: 'success',
     actions: [
@@ -262,7 +292,7 @@ function showModal({
       btn.type = 'button';
       btn.className = act.className || 'btn btn-secondary';
       btn.textContent = act.label;
-      btn.addEventListener('click', () => closeModal(act.value));
+      btn.addEventListener('click', () => { triggerHaptic(10); closeModal(act.value); });
       actionsEl.appendChild(btn);
       if (idx === 0) primaryBtn = btn;
     });
@@ -591,6 +621,8 @@ function createCellControl(item, idx) {
   const input = document.createElement('input');
   input.type = 'text';
   input.inputMode = 'decimal';
+  input.enterKeyHint = 'next';
+  input.setAttribute('enterkeyhint', 'next');
   input.className = 'excel-input';
   input.id = `input_${item.id}`;
   input.name = item.id;
@@ -742,7 +774,7 @@ function renderVerticalTable(params) {
 
     const tdMeta = document.createElement('td');
     tdMeta.className = 'cell-tap-target';
-    tdMeta.addEventListener('click', () => focusInput(idx));
+    tdMeta.addEventListener('click', () => { triggerHaptic(8); focusInput(idx); });
 
     const metaDiv = document.createElement('div');
     metaDiv.className = 'param-meta';
@@ -808,6 +840,7 @@ function focusNextVisibleInput(currentIdx, step) {
 }
 
 async function jumpToNextEmpty() {
+  triggerHaptic(10);
   const total = currentParameters.length;
   if (total === 0) return;
 
@@ -855,6 +888,7 @@ function clearWorkspaceData() {
 }
 
 async function unloadActiveFileConfirm() {
+  triggerHaptic(14);
   const fileName = currentBadgeText || 'file aktif';
   const opName = OPERATOR_SHORT_NAMES[currentOperatorKey] || currentOperatorKey.toUpperCase();
   const confirmed = await showModal({
@@ -875,6 +909,7 @@ async function unloadActiveFileConfirm() {
 }
 
 async function resetFormConfirm() {
+  triggerHaptic(14);
   const opName = OPERATOR_SHORT_NAMES[currentOperatorKey] || currentOperatorKey.toUpperCase();
   const hasFile = Boolean(currentBadgeText);
   const desc = hasFile
@@ -1418,12 +1453,14 @@ function buildExportArtifact() {
 }
 
 async function handleExport() {
+  triggerHaptic(12);
   if (!(await validateBeforeExport())) return;
   const artifact = buildExportArtifact();
   downloadBlob(artifact.content, artifact.fileName, artifact.mimeType);
 }
 
 async function handleShare() {
+  triggerHaptic(12);
   if (!(await validateBeforeExport())) return;
   const artifact = buildExportArtifact();
 
