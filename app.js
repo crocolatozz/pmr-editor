@@ -1,4 +1,4 @@
-const APP_VERSION = '1.6.0';
+const APP_VERSION = '1.6.1';
 const VERSION_STORAGE_KEY = 'pmr_editor_installed_version';
 const STORAGE_PREFIX = 'pmr_editor_draft_v1_';
 
@@ -171,9 +171,9 @@ async function showAppUpdateCard(oldVer, newVer) {
       `Versi baru PMR Editor siap digunakan${oldVer && oldVer !== newVer ? ` (pembaruan dari v${oldVer})` : ''}. Muat ulang sekarang agar tampilan & fitur terbaru langsung aktif.`
     ],
     bullets: [
-      'Posisi badge Terisi (kiri) & Draft tersimpan (kanan) lebih rapi di HP',
-      'Tampilan rasa aplikasi native: anti-zoom, anti-select text & safe-area iPhone',
-      'Tombol Next langsung di keyboard HP & haptic feedback halus'
+      'Perbaikan area notch / Dynamic Island & status-bar shield di PWA iPhone',
+      'Lompat sel kosong & hasil pencarian tidak lagi ketutup sticky toolbar',
+      'Dropdown & interaksi sentuh diseragamkan rasa native di iOS & Android'
     ],
     bulletStyle: 'success',
     actions: [
