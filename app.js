@@ -1,4 +1,4 @@
-const APP_VERSION = '1.6.1';
+const APP_VERSION = '1.6.2';
 const VERSION_STORAGE_KEY = 'pmr_editor_installed_version';
 const STORAGE_PREFIX = 'pmr_editor_draft_v1_';
 
@@ -171,9 +171,9 @@ async function showAppUpdateCard(oldVer, newVer) {
       `Versi baru PMR Editor siap digunakan${oldVer && oldVer !== newVer ? ` (pembaruan dari v${oldVer})` : ''}. Muat ulang sekarang agar tampilan & fitur terbaru langsung aktif.`
     ],
     bullets: [
-      'Perbaikan area notch / Dynamic Island & status-bar shield di PWA iPhone',
-      'Lompat sel kosong & hasil pencarian tidak lagi ketutup sticky toolbar',
-      'Dropdown & interaksi sentuh diseragamkan rasa native di iOS & Android'
+      'Jarak atas header & sticky toolbar di iPhone diturunkan agar bebas efek blur status bar',
+      'Perisai top bar dipertebal agar baris tabel tidak tembus di belakang Dynamic Island / notch',
+      'Presisi lompat sel kosong & hasil pencarian tetap pas di bawah toolbar'
     ],
     bulletStyle: 'success',
     actions: [

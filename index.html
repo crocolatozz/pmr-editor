@@ -642,7 +642,7 @@
       border-bottom: 1px solid var(--border-color);
       background-color: #162033;
       transition: background-color 0.12s;
-      scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 112px);
+      scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 128px);
     }
 
     .vertical-table tbody tr:nth-child(even) {
@@ -956,10 +956,14 @@
     /* Mobile Responsive Refinements */
     @media (max-width: 767px) {
       body {
-        padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
+        padding-top: calc(env(safe-area-inset-top, 0px) + 26px);
         padding-right: max(10px, env(safe-area-inset-right, 0px));
         padding-bottom: max(14px, env(safe-area-inset-bottom, 0px));
         padding-left: max(10px, env(safe-area-inset-left, 0px));
+      }
+
+      body::before {
+        height: calc(env(safe-area-inset-top, 0px) + 12px);
       }
 
       header {
@@ -1068,6 +1072,8 @@
       }
 
       .quick-toolbar {
+        top: calc(env(safe-area-inset-top, 0px) + 12px);
+        background-color: rgba(15, 23, 42, 0.98);
         padding: 8px 10px;
         border-radius: 0 0 10px 10px;
         margin-left: calc(-1 * max(10px, env(safe-area-inset-left)));
@@ -1140,7 +1146,7 @@
       <div>
         <h1>
           📝 PMR Editor
-          <span class="version-badge">v1.6.1</span>
+          <span class="version-badge">v1.6.2</span>
           <span id="offlineBadge" class="offline-pill">📡 Offline Mode</span>
         </h1>
         <p class="subtitle-text">Editor Macro Logsheet DILOC Pabrik Urea 1B</p>
@@ -1259,6 +1265,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=1.6.1"></script>
+  <script src="app.js?v=1.6.2"></script>
 </body>
 </html>
